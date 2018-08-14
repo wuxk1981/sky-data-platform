@@ -6,6 +6,9 @@ zuul:
     add-service-demo:
       path: /add-service/**
       serviceId: add-service-demo
+    random-service-demo:
+      path: /random-service/**
+      serviceId: random-service-demo
 
 spring:
   rabbitmq:
