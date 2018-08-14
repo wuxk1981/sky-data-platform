@@ -1,0 +1,15 @@
+server:
+  port: 80
+
+zuul:
+  routes:
+    add-service-demo:
+      path: /add-service/**
+      serviceId: add-service-demo
+
+spring:
+  rabbitmq:
+    host: 10.47.160.238
+    port: 5673
+    username: guest
+    password: guest

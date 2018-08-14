@@ -1,0 +1,16 @@
+spring:
+  rabbitmq:
+    host: 10.47.160.238
+    port: 5673
+    username: guest
+    password: guest
+  data:
+    mongodb:
+      uri: mongodb://mongodb:27017/add-service-demo-log
+
+kafka:
+  bootstrapServers: kafka:9092
+  groupId: mongo
+  enableAutoCommit: true
+  autoCommitIntervalMs: 100
+  sessionTimeOutMs: 15000
