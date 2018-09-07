@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sky.pay.mapper.TransferFaildMapper" >
+  <resultMap id="BaseResultMap" type="com.sky.pay.entity.TransferFaild" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="uid" property="uid" jdbcType="INTEGER" />
+    <result column="billno" property="billno" jdbcType="VARCHAR" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="t_type" property="tType" jdbcType="VARCHAR" />
+    <result column="t_money" property="tMoney" jdbcType="REAL" />
+    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="t_time" property="tTime" jdbcType="TIMESTAMP" />
+    <result column="ip" property="ip" jdbcType="VARCHAR" />
+    <result column="result" property="result" jdbcType="VARCHAR" />
+    <result column="uptime" property="uptime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, uid, billno, username, t_type, t_money, status, type, t_time, ip, result, uptime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_transfer_faild
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_transfer_faild
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.sky.pay.entity.TransferFaild" >
+    insert into t_transfer_faild (id, uid, billno, 
+      username, t_type, t_money, 
+      status, type, t_time, 
+      ip, result, uptime
+      )
+    values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{billno,jdbcType=VARCHAR}, 
+      #{username,jdbcType=VARCHAR}, #{tType,jdbcType=VARCHAR}, #{tMoney,jdbcType=REAL}, 
+      #{status,jdbcType=CHAR}, #{type,jdbcType=VARCHAR}, #{tTime,jdbcType=TIMESTAMP}, 
+      #{ip,jdbcType=VARCHAR}, #{result,jdbcType=VARCHAR}, #{uptime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.sky.pay.entity.TransferFaild" >
+    insert into t_transfer_faild
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="billno != null" >
+        billno,
+      </if>
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="tType != null" >
+        t_type,
+      </if>
+      <if test="tMoney != null" >
+        t_money,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="tTime != null" >
+        t_time,
+      </if>
+      <if test="ip != null" >
+        ip,
+      </if>
+      <if test="result != null" >
+        result,
+      </if>
+      <if test="uptime != null" >
+        uptime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="billno != null" >
+        #{billno,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="tType != null" >
+        #{tType,jdbcType=VARCHAR},
+      </if>
+      <if test="tMoney != null" >
+        #{tMoney,jdbcType=REAL},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="tTime != null" >
+        #{tTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ip != null" >
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="result != null" >
+        #{result,jdbcType=VARCHAR},
+      </if>
+      <if test="uptime != null" >
+        #{uptime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sky.pay.entity.TransferFaild" >
+    update t_transfer_faild
+    <set >
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="billno != null" >
+        billno = #{billno,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="tType != null" >
+        t_type = #{tType,jdbcType=VARCHAR},
+      </if>
+      <if test="tMoney != null" >
+        t_money = #{tMoney,jdbcType=REAL},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="tTime != null" >
+        t_time = #{tTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ip != null" >
+        ip = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="result != null" >
+        result = #{result,jdbcType=VARCHAR},
+      </if>
+      <if test="uptime != null" >
+        uptime = #{uptime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sky.pay.entity.TransferFaild" >
+    update t_transfer_faild
+    set uid = #{uid,jdbcType=INTEGER},
+      billno = #{billno,jdbcType=VARCHAR},
+      username = #{username,jdbcType=VARCHAR},
+      t_type = #{tType,jdbcType=VARCHAR},
+      t_money = #{tMoney,jdbcType=REAL},
+      status = #{status,jdbcType=CHAR},
+      type = #{type,jdbcType=VARCHAR},
+      t_time = #{tTime,jdbcType=TIMESTAMP},
+      ip = #{ip,jdbcType=VARCHAR},
+      result = #{result,jdbcType=VARCHAR},
+      uptime = #{uptime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="findByPage" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_transfer_faild
+    where 1=1 order by t_money desc limit ${(currentPage-1)*pageCount},#{pageCount}
+  </select>
+
+  <select id="sumTotalCount" resultType="Integer">
+    select count(1) from t_transfer_faild
+  </select>
+</mapper>

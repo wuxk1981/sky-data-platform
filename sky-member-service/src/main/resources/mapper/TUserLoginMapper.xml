@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sky.member.mapper.TUserLoginMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.sky.member.entity.TUserLoginEntity" id="tUserLoginMap">
+        <result property="id" column="id"/>
+        <result property="uid" column="uid"/>
+        <result property="loginTime" column="login_time"/>
+        <result property="loginIp" column="login_ip"/>
+        <result property="isLogin" column="is_login"/>
+        <result property="loginNum" column="login_num"/>
+        <result property="status" column="status"/>
+        <result property="isMobile" column="is_mobile"/>
+        <result property="address" column="address"/>
+        <result property="refurl" column="refurl"/>
+    </resultMap>
+
+
+	<select id="queryObject" resultMap="tUserLoginMap">
+		select * from t_user_login where id = #{id}
+	</select>
+
+	<select id="queryList" resultType="com.sky.member.entity.TUserLoginEntity">
+		select * from t_user_login
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from t_user_login 
+	</select>
+
+	<insert timeout="20" id="insertLogin" parameterType="java.util.Map">
+		insert into
+		t_user_login(uid,login_time,login_ip,is_login,login_num,`status`,is_mobile,address,refurl)
+		values(#{uid},now(),INET_ATON(#{ip}),'1','1','1',#{is_mobile},#{address}
+		,#{refurl});
+	</insert>
+	 
+	<insert id="save" parameterType="com.sky.member.entity.TUserLoginEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into t_user_login
+		(
+			`uid`, 
+			`login_time`, 
+			`login_ip`, 
+			`is_login`, 
+			`login_num`, 
+			`status`, 
+			`is_mobile`, 
+			`address`, 
+			`refurl`
+		)
+		values
+		(
+			#{uid}, 
+			#{loginTime}, 
+			#{loginIp}, 
+			#{isLogin}, 
+			#{loginNum}, 
+			#{status}, 
+			#{isMobile}, 
+			#{address}, 
+			#{refurl}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.sky.member.entity.TUserLoginEntity">
+		update t_user_login 
+		<set>
+			<if test="uid != null">`uid` = #{uid}, </if>
+			<if test="loginTime != null">`login_time` = #{loginTime}, </if>
+			<if test="loginIp != null">`login_ip` = #{loginIp}, </if>
+			<if test="isLogin != null">`is_login` = #{isLogin}, </if>
+			<if test="loginNum != null">`login_num` = #{loginNum}, </if>
+			<if test="status != null">`status` = #{status}, </if>
+			<if test="isMobile != null">`is_mobile` = #{isMobile}, </if>
+			<if test="address != null">`address` = #{address}, </if>
+			<if test="refurl != null">`refurl` = #{refurl}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from t_user_login where id = #{id}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from t_user_login where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

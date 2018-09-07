@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sky.member.mapper.TLoginerrormapMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.sky.member.entity.TLoginerrormapEntity" id="tLoginerrormapMap">
+        <result property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="times" column="times"/>
+        <result property="logintime" column="logintime"/>
+    </resultMap>
+
+	<select timeout="20" id="selectLoginErrorMap" parameterType="java.lang.String"
+			resultType="java.util.Map">
+		Select * from t_loginerrormap where username = #{username}
+	</select>
+
+	<select id="queryObject" resultMap="tLoginerrormapMap">
+		select * from t_loginerrormap where id = #{id}
+	</select>
+
+	<select id="queryList" resultMap="tLoginerrormapMap">
+		select * from t_loginerrormap
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from t_loginerrormap 
+	</select>
+	 
+	<insert id="save" parameterType="com.sky.member.entity.TLoginerrormapEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into t_loginerrormap
+		(
+			`username`, 
+			`times`, 
+			`logintime`
+		)
+		values
+		(
+			#{username}, 
+			#{times}, 
+			#{logintime}
+		)
+	</insert>
+
+	<insert timeout="20" id="insertLoginErrorMap">
+		<selectKey keyProperty="count" resultType="java.lang.Integer"
+				   order="BEFORE">
+			select count(1) count from t_loginerrormap where username = #{username}
+		</selectKey>
+		<if test="count > 0">
+			update t_loginerrormap
+			set times = times+1,logintime=NOW()
+			where username = #{username} ;
+
+		</if>
+		<if test="count==0">
+			insert into t_loginerrormap(username,times,logintime) VALUES
+			(#{username},1,now()) ;
+		</if>
+	</insert>
+
+	<update timeout="20" id="deleteLoginErrorMap" parameterType="java.lang.String">
+		update t_loginerrormap set times='0' where username = #{username} ;
+	</update>
+
+	<update id="update" parameterType="com.sky.member.entity.TLoginerrormapEntity">
+		update t_loginerrormap 
+		<set>
+			<if test="username != null">`username` = #{username}, </if>
+			<if test="times != null">`times` = #{times}, </if>
+			<if test="logintime != null">`logintime` = #{logintime}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from t_loginerrormap where id = #{id}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from t_loginerrormap where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

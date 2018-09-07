@@ -1,0 +1,22 @@
+server:
+  port: 9411
+
+spring:
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: guest
+    password: guest
+  datasource:
+    schema: classpath:/mysql.sql
+    url: jdbc:mysql://mysql-server:3306/sleuth_log
+    username: root
+    password: 123456
+    initialize: true
+    continueOnError: true
+  sleuth:
+    enabled: false
+
+zipkin:
+  storage:
+    type: mysql

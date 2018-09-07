@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sky.member.mapper.RoleResourceMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.sky.member.entity.RoleResourceEntity" id="roleResourceMap">
+        <result property="id" column="id"/>
+        <result property="roleId" column="role_id"/>
+        <result property="resourceId" column="resource_id"/>
+    </resultMap>
+
+	<select id="queryObject" resultMap="roleResourceMap">
+		select * from role_resource where id = #{id}
+	</select>
+
+	<select id="queryList" resultMap="roleResourceMap">
+		select * from role_resource
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from role_resource 
+	</select>
+	 
+	<insert id="save" parameterType="com.sky.member.entity.RoleResourceEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into role_resource
+		(
+			`role_id`, 
+			`resource_id`
+		)
+		values
+		(
+			#{roleId}, 
+			#{resourceId}
+		)
+	</insert>
+
+	<insert id="saveBatch"  useGeneratedKeys="true" >
+		insert into role_resource
+		(
+		`role_id`,
+		`resource_id`
+		)
+		values
+		<foreach collection ="resourceIds" item="resourceId" index= "index" separator =",">
+			(
+			#{roleId}, #{resourceId}
+			)
+		</foreach >
+	</insert>
+	 
+	<update id="update" parameterType="com.sky.member.entity.RoleResourceEntity">
+		update role_resource 
+		<set>
+			<if test="roleId != null">`role_id` = #{roleId}, </if>
+			<if test="resourceId != null">`resource_id` = #{resourceId}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from role_resource where id = #{id}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from role_resource where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+	<!-- 添加两个批量删除  -->
+	<delete id="deleteBatchByRolesIds">
+		delete from role_resource where role_id in
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+	<delete id="deleteBatchByResourceIds">
+		delete from role_resource where resource_id in
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

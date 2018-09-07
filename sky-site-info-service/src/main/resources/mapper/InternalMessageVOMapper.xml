@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sky.site.info.mapper.InternalMessageVOMapper">
+    <resultMap id="BaseResultMap" type="com.sky.site.info.entity.InternalMessageVO">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="uid" property="uid" jdbcType="INTEGER"/>
+        <result column="message" property="message" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="CHAR"/>
+        <result column="addtime" property="addtime" jdbcType="TIMESTAMP"/>
+        <result column="adduserid" property="adduserid" jdbcType="INTEGER"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+      id, uid, message, status, addtime, adduserid
+    </sql>
+
+    <!--读取站内信列表-->
+    <select timeout="20" id="selectMessagePageByStatus" parameterType="java.lang.String"
+            resultType="java.util.Map">
+        select id,CONCAT(LEFT(message,20),'...') as message,`status`,date_format(addtime,'%Y-%m-%d %H:%i:%s') as addtime
+        from t_internal_message
+        where uid=#{uid}
+        <if test="status != null and status !=''">
+            AND `status`=#{status}
+        </if>
+        <if test="bdate != null and bdate !=''">
+            and DATE_FORMAT(addtime, '%Y-%m-%d') BETWEEN #{bdate} and
+            #{edate}
+        </if>
+        <if test="starLimit!=null and pageSize!=null">
+            LIMIT #{starLimit},#{pageSize}
+        </if>
+    </select>
+
+    <!--读取站内信数量-->
+    <select timeout="20" id="selectMessageReadCount" parameterType="java.util.Map"
+            resultType="java.util.Map">
+        select IFNULL(sum(case when `status`=1 then 1 else 0 end),0)
+        as isread,
+        IFNULL(sum(case when `status`=0 then 1 else 0 end),0) as
+        noread from
+        t_internal_message
+        where uid=#{uid}
+        <if test="bdate != null and bdate !=''">
+            and DATE_FORMAT(addtime, '%Y-%m-%d') BETWEEN #{bdate} and
+            #{edate}
+        </if>
+        order by addtime desc
+    </select>
+</mapper>

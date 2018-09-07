@@ -1,0 +1,11 @@
+server:
+  port: 8100
+  
+spring:
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: guest
+    password: guest
+
+my.info.str: test1111

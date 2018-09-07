@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sky.member.mapper.RuserRoleMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.sky.member.entity.RuserRoleEntity" id="userRoleMap">
+        <result property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="roleId" column="role_id"/>
+    </resultMap>
+
+	<select id="queryObject" resultMap="userRoleMap">
+		select * from user_role where id = #{id}
+	</select>
+
+	<select id="queryList" resultMap="userRoleMap">
+		select * from user_role
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from user_role
+	</select>
+	 
+	<insert id="save" parameterType="com.sky.member.entity.RuserRoleEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into user_role
+		(
+			`user_id`, 
+			`role_id`
+		)
+		values
+		(
+			#{userId}, 
+			#{roleId}
+		)
+	</insert>
+	<insert id="saveBatch"  useGeneratedKeys="true" >
+		insert into user_role
+		(
+			`user_id`,
+			`role_id`
+		)
+		values
+		<foreach collection ="rolesIds" item="rolesId" index= "index" separator =",">
+		(
+		#{userId}, #{rolesId}
+		)
+		</foreach >
+	</insert>
+
+	 
+	<update id="update" parameterType="com.sky.member.entity.RuserRoleEntity">
+		update user_role
+		<set>
+			<if test="userId != null">`user_id` = #{userId}, </if>
+			<if test="roleId != null">`role_id` = #{roleId}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from user_role where id = #{id}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from user_role where id in
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+	<delete id="deleteBatchByUserIds">
+		delete from user_role where user_id in
+		<foreach  item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+	<delete id="deleteBatchByRolesIds">
+		delete from user_role where role_id in
+		<foreach  item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+
+</mapper>

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.sky</groupId>
+        <artifactId>sky</artifactId>
+        <version>1.0</version>
+    </parent>
+
+    <artifactId>sky-data-process-service</artifactId>
+    <description>数据处理服务</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.sky</groupId>
+            <artifactId>sky-common</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-eureka</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-config</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-bus-amqp</artifactId>
+        </dependency>
+        <!-- springboot与mybatis的集成_Begin -->
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+        <!-- springboot与mybatis的集成_End -->
+    </dependencies>
+
+    <properties>
+        <!-- 指定java版本 -->
+        <java.version>1.8</java.version>
+        <!-- 镜像前缀，推送镜像到远程库时需要，这里配置了一个阿里云的私有库 -->
+        <docker.image.prefix>
+            192.168.0.26:5001
+        </docker.image.prefix>
+        <!-- docker镜像的tag -->
+        <docker.tag>sky</docker.tag>
+
+        <!-- 激活的profile -->
+        <activatedProperties></activatedProperties>
+
+        <kafka.bootstrap.servers>kafka-server:9092</kafka.bootstrap.servers>
+    </properties>
+
+    <profiles>
+        <!-- docker环境 -->
+        <profile>
+            <id>docker</id>
+
+            <properties>
+                <activatedProperties>docker</activatedProperties>
+                <docker.tag>docker-sky-${project.version}</docker.tag>
+
+                <kafka.bootstrap.servers>kafka-server:9092</kafka.bootstrap.servers>
+            </properties>
+        </profile>
+    </profiles>
+
+    <build>
+        <defaultGoal>install</defaultGoal>
+        <finalName>${project.artifactId}</finalName>
+
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
+        <plugins>
+            <!-- 配置spring boot maven插件，把项目打包成可运行的jar包 -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <executable>true</executable>
+                </configuration>
+            </plugin>
+
+            <!-- 打包时跳过单元测试 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <skipTests>true</skipTests>
+                </configuration>
+            </plugin>
+
+            <!-- 配置docker maven插件，绑定install生命周期，在运行maven install时生成docker镜像 -->
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.4.13</version>
+                <executions>
+                    <execution>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>build</goal>
+                            <goal>tag</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <!-- 修改这里的docker节点ip，需要打开docker节点的远程管理端口2375，
+                    具体如何配置可以参照之前的docker安装和配置的文章 -->
+                    <dockerHost>http://192.168.0.26:2375</dockerHost>
+                    <imageName>${docker.image.prefix}/${project.build.finalName}</imageName>
+                    <baseImage>java</baseImage>
+                    <!-- 这里的entryPoint定义了容器启动时的运行命令，容器启动时运行
+                    java -jar 包名 , -Djava.security.egd这个配置解决tomcat8启动时因为需要收集环境噪声来生成安全随机数导致启动过慢的问题-->
+                    <entryPoint>["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "/${project.build.finalName}.jar"]
+                    </entryPoint>
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                    <image>${docker.image.prefix}/${project.build.finalName}</image>
+                    <newName>${docker.image.prefix}/${project.build.finalName}:${docker.tag}</newName>
+                    <forceTags>true</forceTags>
+                    <pushImage>false</pushImage>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.mybatis.generator</groupId>
+                <artifactId>mybatis-generator-maven-plugin</artifactId>
+                <version>1.3.2</version>
+                <configuration>
+                    <verbose>true</verbose>
+                    <overwrite>true</overwrite>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>mysql</groupId>
+                        <artifactId>mysql-connector-java</artifactId>
+                        <version>${mysql.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+    </build>
+</project>

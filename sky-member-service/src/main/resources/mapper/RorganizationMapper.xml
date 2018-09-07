@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sky.member.mapper.RorganizationMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.sky.member.entity.RorganizationEntity" id="organizationMap">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="address" column="address"/>
+        <result property="code" column="code"/>
+        <result property="icon" column="icon"/>
+        <result property="pid" column="pid"/>
+        <result property="seq" column="seq"/>
+        <result property="createTime" column="create_time"/>
+        <result property="cid" column="cid"/>
+    </resultMap>
+
+	<select id="queryObject" resultMap="organizationMap">
+		select * from organization where id = #{id}
+	</select>
+
+	<select id="queryList" resultMap="organizationMap">
+		select * from organization
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from organization
+	</select>
+	 
+	<insert id="save" parameterType="com.sky.member.entity.RorganizationEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into organization
+		(
+			`name`, 
+			`address`, 
+			`code`, 
+			`icon`, 
+			`pid`, 
+			`seq`, 
+			`create_time`, 
+			`cid`
+		)
+		values
+		(
+			#{name}, 
+			#{address}, 
+			#{code}, 
+			#{icon}, 
+			#{pid}, 
+			#{seq}, 
+			now(),
+			#{cid}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.sky.member.entity.RorganizationEntity">
+		update organization
+		<set>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="address != null">`address` = #{address}, </if>
+			<if test="code != null">`code` = #{code}, </if>
+			<if test="icon != null">`icon` = #{icon}, </if>
+			<if test="pid != null">`pid` = #{pid}, </if>
+			<if test="seq != null">`seq` = #{seq}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="cid != null">`cid` = #{cid}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from organization where id = #{id}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from organization where id in
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

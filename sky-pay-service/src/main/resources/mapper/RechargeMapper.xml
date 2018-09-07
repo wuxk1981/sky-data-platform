@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sky.pay.mapper.RechargeMapper" >
+  <resultMap id="BaseResultMap" type="com.sky.pay.entity.Recharge" >
+    <id column="r_id" property="rId" jdbcType="INTEGER" />
+    <result column="uid" property="uid" jdbcType="INTEGER" />
+    <result column="pay_type" property="payType" jdbcType="TINYINT" />
+    <result column="bank_code" property="bankCode" jdbcType="VARCHAR" />
+    <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+    <result column="order_amount" property="orderAmount" jdbcType="REAL" />
+    <result column="order_time" property="orderTime" jdbcType="TIMESTAMP" />
+    <result column="trade_status" property="tradeStatus" jdbcType="VARCHAR" />
+    <result column="trade_no" property="tradeNo" jdbcType="VARCHAR" />
+    <result column="ip" property="ip" jdbcType="VARCHAR" />
+    <result column="finish_time" property="finishTime" jdbcType="TIMESTAMP" />
+    <result column="merchant" property="merchant" jdbcType="VARCHAR" />
+    <result column="upuid" property="upuid" jdbcType="INTEGER" />
+    <result column="pay_id" property="payId" jdbcType="INTEGER" />
+    <result column="cagent" property="cagent" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    r_id, uid, pay_type, bank_code, order_no, order_amount, order_time, trade_status, 
+    trade_no, ip, finish_time, merchant, upuid, pay_id, cagent
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_recharge
+    where r_id = #{rId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_recharge
+    where r_id = #{rId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.sky.pay.entity.Recharge" >
+    insert into t_recharge (r_id, uid, pay_type, 
+      bank_code, order_no, order_amount, 
+      order_time, trade_status, trade_no, 
+      ip, finish_time, merchant, 
+      upuid, pay_id, cagent
+      )
+    values (#{rId,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{payType,jdbcType=TINYINT}, 
+      #{bankCode,jdbcType=VARCHAR}, #{orderNo,jdbcType=VARCHAR}, #{orderAmount,jdbcType=REAL}, 
+      #{orderTime,jdbcType=TIMESTAMP}, #{tradeStatus,jdbcType=VARCHAR}, #{tradeNo,jdbcType=VARCHAR}, 
+      #{ip,jdbcType=VARCHAR}, #{finishTime,jdbcType=TIMESTAMP}, #{merchant,jdbcType=VARCHAR}, 
+      #{upuid,jdbcType=INTEGER}, #{payId,jdbcType=INTEGER}, #{cagent,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.sky.pay.entity.Recharge" >
+    insert into t_recharge
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="rId != null" >
+        r_id,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="payType != null" >
+        pay_type,
+      </if>
+      <if test="bankCode != null" >
+        bank_code,
+      </if>
+      <if test="orderNo != null" >
+        order_no,
+      </if>
+      <if test="orderAmount != null" >
+        order_amount,
+      </if>
+      <if test="orderTime != null" >
+        order_time,
+      </if>
+      <if test="tradeStatus != null" >
+        trade_status,
+      </if>
+      <if test="tradeNo != null" >
+        trade_no,
+      </if>
+      <if test="ip != null" >
+        ip,
+      </if>
+      <if test="finishTime != null" >
+        finish_time,
+      </if>
+      <if test="merchant != null" >
+        merchant,
+      </if>
+      <if test="upuid != null" >
+        upuid,
+      </if>
+      <if test="payId != null" >
+        pay_id,
+      </if>
+      <if test="cagent != null" >
+        cagent,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="rId != null" >
+        #{rId,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="payType != null" >
+        #{payType,jdbcType=TINYINT},
+      </if>
+      <if test="bankCode != null" >
+        #{bankCode,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo != null" >
+        #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="orderAmount != null" >
+        #{orderAmount,jdbcType=REAL},
+      </if>
+      <if test="orderTime != null" >
+        #{orderTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tradeStatus != null" >
+        #{tradeStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeNo != null" >
+        #{tradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null" >
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="finishTime != null" >
+        #{finishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="merchant != null" >
+        #{merchant,jdbcType=VARCHAR},
+      </if>
+      <if test="upuid != null" >
+        #{upuid,jdbcType=INTEGER},
+      </if>
+      <if test="payId != null" >
+        #{payId,jdbcType=INTEGER},
+      </if>
+      <if test="cagent != null" >
+        #{cagent,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sky.pay.entity.Recharge" >
+    update t_recharge
+    <set >
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="payType != null" >
+        pay_type = #{payType,jdbcType=TINYINT},
+      </if>
+      <if test="bankCode != null" >
+        bank_code = #{bankCode,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo != null" >
+        order_no = #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="orderAmount != null" >
+        order_amount = #{orderAmount,jdbcType=REAL},
+      </if>
+      <if test="orderTime != null" >
+        order_time = #{orderTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tradeStatus != null" >
+        trade_status = #{tradeStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeNo != null" >
+        trade_no = #{tradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null" >
+        ip = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="finishTime != null" >
+        finish_time = #{finishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="merchant != null" >
+        merchant = #{merchant,jdbcType=VARCHAR},
+      </if>
+      <if test="upuid != null" >
+        upuid = #{upuid,jdbcType=INTEGER},
+      </if>
+      <if test="payId != null" >
+        pay_id = #{payId,jdbcType=INTEGER},
+      </if>
+      <if test="cagent != null" >
+        cagent = #{cagent,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where r_id = #{rId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sky.pay.entity.Recharge" >
+    update t_recharge
+    set uid = #{uid,jdbcType=INTEGER},
+      pay_type = #{payType,jdbcType=TINYINT},
+      bank_code = #{bankCode,jdbcType=VARCHAR},
+      order_no = #{orderNo,jdbcType=VARCHAR},
+      order_amount = #{orderAmount,jdbcType=REAL},
+      order_time = #{orderTime,jdbcType=TIMESTAMP},
+      trade_status = #{tradeStatus,jdbcType=VARCHAR},
+      trade_no = #{tradeNo,jdbcType=VARCHAR},
+      ip = #{ip,jdbcType=VARCHAR},
+      finish_time = #{finishTime,jdbcType=TIMESTAMP},
+      merchant = #{merchant,jdbcType=VARCHAR},
+      upuid = #{upuid,jdbcType=INTEGER},
+      pay_id = #{payId,jdbcType=INTEGER},
+      cagent = #{cagent,jdbcType=VARCHAR}
+    where r_id = #{rId,jdbcType=INTEGER}
+  </update>
+
+  <!--  通过订单号查询订单信息  -->
+  <select id="selectByOrderNo" resultMap="BaseResultMap">
+     select r_id as rId,pay_id as payId,uid as uid,order_time as orderTime,merchant,cagent,(case pay_type
+          when '1' then '网银'
+          when '2' then'微信'
+          when '3' then'支付宝'
+          when '5' then '银联'
+          when '6' then '京东'
+          when '7' then '快捷'
+          when '8' then '微信条码'
+          when '9' then '支付宝条码'
+          else '财付通' end) type,order_amount as orderAmount,
+          (case trade_status when 'paying' then '处理中' when 'success' then '交易成功' else
+          '交易失败' end) tradeStatus,pay_type as payType
+          from t_recharge where order_no = #{orderNo}
+    </select>
+  <update id="updateByOrderNo" parameterType="com.sky.pay.entity.Recharge" >
+    update t_recharge
+    <set >
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="payType != null" >
+        pay_type = #{payType,jdbcType=TINYINT},
+      </if>
+      <if test="bankCode != null" >
+        bank_code = #{bankCode,jdbcType=VARCHAR},
+      </if>
+      <if test="orderAmount != null" >
+        order_amount = #{orderAmount,jdbcType=REAL},
+      </if>
+      <if test="orderTime != null" >
+        order_time = #{orderTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tradeStatus != null" >
+        trade_status = #{tradeStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeNo != null" >
+        trade_no = #{tradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null" >
+        ip = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="finishTime != null" >
+        finish_time = #{finishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="merchant != null" >
+        merchant = #{merchant,jdbcType=VARCHAR},
+      </if>
+      <if test="upuid != null" >
+        upuid = #{upuid,jdbcType=INTEGER},
+      </if>
+      <if test="payId != null" >
+        pay_id = #{payId,jdbcType=INTEGER},
+      </if>
+      <if test="cagent != null" >
+        cagent = #{cagent,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where order_no = #{orderNo}
+  </update>
+</mapper>

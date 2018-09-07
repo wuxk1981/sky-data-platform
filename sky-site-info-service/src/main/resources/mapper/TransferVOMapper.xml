@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sky.site.info.mapper.TransferVOMapper">
+    <resultMap id="BaseResultMap" type="com.sky.site.info.entity.TransferVO">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="uid" property="uid" jdbcType="INTEGER"/>
+        <result column="billno" property="billno" jdbcType="VARCHAR"/>
+        <result column="username" property="username" jdbcType="VARCHAR"/>
+        <result column="t_type" property="tType" jdbcType="VARCHAR"/>
+        <result column="t_money" property="tMoney" jdbcType="REAL"/>
+        <result column="old_money" property="oldMoney" jdbcType="REAL"/>
+        <result column="new_money" property="newMoney" jdbcType="REAL"/>
+        <result column="type" property="type" jdbcType="VARCHAR"/>
+        <result column="t_time" property="tTime" jdbcType="TIMESTAMP"/>
+        <result column="ip" property="ip" jdbcType="VARCHAR"/>
+        <result column="result" property="result" jdbcType="VARCHAR"/>
+        <result column="cagent" property="cagent" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, uid, billno, username, t_type, t_money, old_money, new_money, type, t_time, ip, 
+    result, cagent
+  </sql>
+
+    <select timeout="20" id="selectTransferCount" parameterType="java.util.Map"
+            resultType="java.util.Map">
+        SELECT count(1) cnt,sum(case WHEN t_type='IN' then t_money else -1*t_money end) total
+        FROM t_transfer where
+          DATE_FORMAT(t_time,'%Y-%m-%d') BETWEEN #{bdate} and #{edate}
+        <if test="userName != null and userName !=''">
+            AND username = #{userName}
+        </if>
+        <if test="type != null and type !=''">
+            and type = #{type}
+        </if>
+        <if test="t_type != null and t_type !=''">
+            and t_type = #{t_type}
+        </if>
+    </select>
+
+    <select timeout="20" id="selectTransferPage" parameterType="java.util.Map"
+            resultType="java.util.Map">
+        select t_time,(case when t_type ='IN' then '转入平台' else '转入游戏' end)
+        t_type,type,old_money,t_money,new_money
+        from t_transfer where
+          DATE_FORMAT(t_time, '%Y-%m-%d') BETWEEN #{bdate} and#{edate}
+        <if test="userName != null and userName !=''">
+            AND username = #{userName}
+        </if>
+        <if test="type != null and type !=''">
+            and type = #{type}
+        </if>
+        <if test="t_type != null and t_type !=''">
+            and t_type = #{t_type}
+        </if>
+        ORDER BY t_time DESC
+        LIMIT #{starLimit},#{pageSize}
+    </select>
+
+</mapper>

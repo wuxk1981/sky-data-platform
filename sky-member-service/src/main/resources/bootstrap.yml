@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: @project.artifactId@
+  profiles:
+    active: @activatedProperties@
+  cloud:
+    config:
+      profile: dev
+      label: master
+      discovery:
+        enabled: true
+        serviceId: SKY-CONFIG-SERVER
+      failFast: true
+      retry:
+        initialInterval: 10000
+        multiplier: 2
+        maxInterval: 60000
+        maxAttempts: 10
+
+logging:
+  level:
+    com.sky.member.mapper : debug  #这一个地址是对就有的Mapper的包地址，并非XML文件的包
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://service-registry:8761/eureka/

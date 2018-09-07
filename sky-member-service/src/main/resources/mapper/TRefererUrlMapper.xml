@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sky.member.mapper.TRefererUrlMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.sky.member.entity.TRefererUrlEntity" id="tRefererUrlMap">
+        <result property="id" column="id"/>
+        <result property="domain" column="domain"/>
+        <result property="name" column="name"/>
+        <result property="rmk" column="rmk"/>
+        <result property="addtime" column="addtime"/>
+    </resultMap>
+
+	<select timeout="20" id="selectRefererUrl" parameterType="java.lang.String"
+			resultType="java.util.Map">
+		Select domain from t_referer_url where 1=1
+		<if test="domain != null and domain !=''">
+			AND domain=#{domain}
+		</if>
+		<if test="cagent != null and cagent !=''">
+			AND LOWER(name)=LOWER(#{cagent})
+		</if>
+	</select>
+	<select id="queryObject" resultMap="tRefererUrlMap">
+		select * from t_referer_url where id = #{id}
+	</select>
+
+	<select id="queryList" resultMap="tRefererUrlMap">
+		select * from t_referer_url
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from t_referer_url 
+	</select>
+	 
+	<insert id="save" parameterType="com.sky.member.entity.TRefererUrlEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into t_referer_url
+		(
+			`domain`, 
+			`name`, 
+			`rmk`, 
+			`addtime`
+		)
+		values
+		(
+			#{domain}, 
+			#{name}, 
+			#{rmk}, 
+			#{addtime}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.sky.member.entity.TRefererUrlEntity">
+		update t_referer_url 
+		<set>
+			<if test="domain != null">`domain` = #{domain}, </if>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="rmk != null">`rmk` = #{rmk}, </if>
+			<if test="addtime != null">`addtime` = #{addtime}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from t_referer_url where id = #{id}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from t_referer_url where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

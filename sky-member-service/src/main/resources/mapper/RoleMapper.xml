@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sky.member.mapper.RoleMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.sky.member.entity.RoleEntity" id="roleMap">
+        <result property="id" column="id"/>
+		<result property="code" column="code"/>
+        <result property="name" column="name"/>
+        <result property="seq" column="seq"/>
+        <result property="description" column="description"/>
+        <result property="status" column="status"/>
+        <result property="cid" column="cid"/>
+    </resultMap>
+
+	<select id="queryRolesList" resultMap="roleMap">
+		select * from role where id in (
+		select role_id from user_role where user_id=#{userid}
+		)
+	</select>
+
+
+	<select id="queryObject" resultMap="roleMap">
+		select * from role where id = #{id}
+	</select>
+
+	<select id="queryList" resultMap="roleMap">
+		select * from role
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from role 
+	</select>
+	 
+	<insert id="save" parameterType="com.sky.member.entity.RoleEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into role
+		(
+	        `code`,
+			`name`, 
+			`seq`, 
+			`description`, 
+			`status`, 
+			`cid`
+		)
+		values
+		(
+		    #{code},
+			#{name}, 
+			#{seq}, 
+			#{description}, 
+			#{status}, 
+			#{cid}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.sky.member.entity.RoleEntity">
+		update role 
+		<set>
+			<if test="code != null">`code` = #{code}, </if>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="seq != null">`seq` = #{seq}, </if>
+			<if test="description != null">`description` = #{description}, </if>
+			<if test="status != null">`status` = #{status}, </if>
+			<if test="cid != null">`cid` = #{cid}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from role where id = #{id}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from role where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

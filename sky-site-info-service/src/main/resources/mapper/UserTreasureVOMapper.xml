@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sky.site.info.mapper.UserTreasureVOMapper">
+    <resultMap id="BaseResultMap" type="com.sky.site.info.entity.UserTreasureVO">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="uid" property="uid" jdbcType="INTEGER"/>
+        <result column="amount" property="amount" jdbcType="REAL"/>
+        <result column="old_money" property="oldMoney" jdbcType="REAL"/>
+        <result column="new_money" property="newMoney" jdbcType="REAL"/>
+        <result column="number" property="number" jdbcType="VARCHAR"/>
+        <result column="t_type" property="tType" jdbcType="VARCHAR"/>
+        <result column="type" property="type" jdbcType="VARCHAR"/>
+        <result column="addtime" property="addtime" jdbcType="TIMESTAMP"/>
+        <result column="platform_type" property="platformType" jdbcType="INTEGER"/>
+        <result column="s_type" property="sType" jdbcType="CHAR"/>
+        <result column="rmk" property="rmk" jdbcType="VARCHAR"/>
+        <result column="operator_id" property="operatorId" jdbcType="INTEGER"/>
+        <result column="cagent" property="cagent" jdbcType="VARCHAR"/>
+        <result column="is_first" property="isFirst" jdbcType="INTEGER"/>
+        <result column="ip" property="ip" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, uid, amount, old_money, new_money, number, t_type, type, addtime, platform_type, 
+    s_type, rmk, operator_id, cagent, is_first, ip
+  </sql>
+
+    <!-- 用户资金流水分页查询 -->
+    <select id="selectUserTreasurePage" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+          SQL_NO_CACHE IF(type='OUT',-amount,amount) AS amount,new_money,t_type,addtime,rmk
+        FROM t_user_treasure b,
+        (
+          SELECT id FROM t_user_treasure
+            <where>
+                <if test="uid!=null">
+                    uid=#{uid}
+                </if>
+                <if test="bdate!=null and edate!=null">
+                    AND addtime BETWEEN #{bdate} AND #{edate}
+                </if>
+                <if test="t_type!=null and t_type!=null">
+                    AND t_type=#{t_type}
+                </if>
+                <if test="starLimit!=null and pageSize!=null">
+                    LIMIT #{starLimit},#{pageSize}
+                </if>
+            </where>
+        ) a
+        WHERE a.id=b.id
+    </select>
+
+    <!-- 分页总数 -->
+    <select id="selectUserTreasurePageCount" parameterType="java.util.Map"
+            resultType="java.lang.Integer">
+        SELECT
+          COUNT(1)
+        FROM t_user_treasure b,
+        (
+            SELECT id FROM t_user_treasure
+            <where>
+                <if test="uid!=null">
+                    uid=#{uid}
+                </if>
+                <if test="bdate!=null and edate!=null">
+                    AND addtime BETWEEN #{bdate} AND #{edate}
+                </if>
+                <if test="t_type!=null and t_type!=null">
+                    AND t_type=#{t_type}
+                </if>
+            </where>
+        ) a
+        WHERE a.id=b.id
+    </select>
+</mapper>

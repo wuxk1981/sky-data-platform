@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sky.pay.mapper.UserPlatformReportMapper" >
+  <resultMap id="BaseResultMap" type="com.sky.pay.entity.UserPlatformReport" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="uid" property="uid" jdbcType="INTEGER" />
+    <result column="platform_type" property="platformType" jdbcType="VARCHAR" />
+    <result column="currency" property="currency" jdbcType="VARCHAR" />
+    <result column="note_num" property="noteNum" jdbcType="INTEGER" />
+    <result column="bet_amount" property="betAmount" jdbcType="DOUBLE" />
+    <result column="valid_bet_amount" property="validBetAmount" jdbcType="DOUBLE" />
+    <result column="net_amount" property="netAmount" jdbcType="DOUBLE" />
+    <result column="bet_time" property="betTime" jdbcType="TIMESTAMP" />
+    <result column="cagent" property="cagent" jdbcType="VARCHAR" />
+    <!--平台信息-->
+    <result column="platId" property="platId" jdbcType="INTEGER" />
+    <result column="platName" property="platName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, uid, platform_type, currency, note_num, bet_amount, valid_bet_amount, net_amount, 
+    bet_time, cagent
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_user_platform_report
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_user_platform_report
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.sky.pay.entity.UserPlatformReport" >
+    insert into t_user_platform_report (id, uid, platform_type, 
+      currency, note_num, bet_amount, 
+      valid_bet_amount, net_amount, bet_time, 
+      cagent)
+    values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{platformType,jdbcType=VARCHAR}, 
+      #{currency,jdbcType=VARCHAR}, #{noteNum,jdbcType=INTEGER}, #{betAmount,jdbcType=DOUBLE}, 
+      #{validBetAmount,jdbcType=DOUBLE}, #{netAmount,jdbcType=DOUBLE}, #{betTime,jdbcType=TIMESTAMP}, 
+      #{cagent,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sky.pay.entity.UserPlatformReport" >
+    insert into t_user_platform_report
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="platformType != null" >
+        platform_type,
+      </if>
+      <if test="currency != null" >
+        currency,
+      </if>
+      <if test="noteNum != null" >
+        note_num,
+      </if>
+      <if test="betAmount != null" >
+        bet_amount,
+      </if>
+      <if test="validBetAmount != null" >
+        valid_bet_amount,
+      </if>
+      <if test="netAmount != null" >
+        net_amount,
+      </if>
+      <if test="betTime != null" >
+        bet_time,
+      </if>
+      <if test="cagent != null" >
+        cagent,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="platformType != null" >
+        #{platformType,jdbcType=VARCHAR},
+      </if>
+      <if test="currency != null" >
+        #{currency,jdbcType=VARCHAR},
+      </if>
+      <if test="noteNum != null" >
+        #{noteNum,jdbcType=INTEGER},
+      </if>
+      <if test="betAmount != null" >
+        #{betAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="validBetAmount != null" >
+        #{validBetAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="netAmount != null" >
+        #{netAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="betTime != null" >
+        #{betTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cagent != null" >
+        #{cagent,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sky.pay.entity.UserPlatformReport" >
+    update t_user_platform_report
+    <set >
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="platformType != null" >
+        platform_type = #{platformType,jdbcType=VARCHAR},
+      </if>
+      <if test="currency != null" >
+        currency = #{currency,jdbcType=VARCHAR},
+      </if>
+      <if test="noteNum != null" >
+        note_num = #{noteNum,jdbcType=INTEGER},
+      </if>
+      <if test="betAmount != null" >
+        bet_amount = #{betAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="validBetAmount != null" >
+        valid_bet_amount = #{validBetAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="netAmount != null" >
+        net_amount = #{netAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="betTime != null" >
+        bet_time = #{betTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cagent != null" >
+        cagent = #{cagent,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sky.pay.entity.UserPlatformReport" >
+    update t_user_platform_report
+    set uid = #{uid,jdbcType=INTEGER},
+      platform_type = #{platformType,jdbcType=VARCHAR},
+      currency = #{currency,jdbcType=VARCHAR},
+      note_num = #{noteNum,jdbcType=INTEGER},
+      bet_amount = #{betAmount,jdbcType=DOUBLE},
+      valid_bet_amount = #{validBetAmount,jdbcType=DOUBLE},
+      net_amount = #{netAmount,jdbcType=DOUBLE},
+      bet_time = #{betTime,jdbcType=TIMESTAMP},
+      cagent = #{cagent,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <!-- 根据uid查询会员注单 -->
+  <select id="findBetCodeByUid" resultMap="BaseResultMap">
+    SELECT
+      dd.value AS platId,dd.name AS platName,
+      upr.id,upr.uid,
+      upr.platform_type AS platformType,
+      upr.currency AS currency,
+      upr.note_num AS noteNum,
+      upr.bet_amount AS betAmount,
+      upr.valid_bet_amount AS validBetAmount,
+      upr.net_amount AS netAmount,
+      upr.bet_time AS betTime,
+      upr.cagent AS cagent
+    FROM t_dic_data dd
+    LEFT JOIN(
+        SELECT
+            CASE WHEN platform_type = 'agbr' THEN 'AG' ELSE platform_type END AS platform_type,
+            currency,note_num,bet_amount,valid_bet_amount,net_amount,bet_time,cagent,id,uid
+        FROM t_user_platform_report
+        WHERE uid=#{uid})
+    upr ON dd.code=upper(upr.platform_type)
+    WHERE dd.type=1 AND dd.value NOT IN (17,18) AND upr.bet_amount IS NOT NULL
+    ORDER BY bet_amount DESC,bet_time DESC
+  </select>
+
+  <select id="sumBetCodeByUid" resultMap="BaseResultMap">
+    SELECT
+      SUM(note_num) AS note_num,
+      SUM(bet_amount) AS bet_amount,
+      SUM(valid_bet_amount) AS valid_bet_amount,
+      SUM(net_amount) AS net_amount
+    FROM t_user_platform_report
+    WHERE platform_type NOT IN ('bglottery','bgvideo') AND uid=#{uid}
+  </select>
+</mapper>

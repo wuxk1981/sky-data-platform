@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sky.pay.mapper.UserCardMapper" >
+  <resultMap id="BaseResultMap" type="com.sky.pay.entity.UserCard" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="uid" property="uid" jdbcType="INTEGER" />
+    <result column="card_username" property="cardUsername" jdbcType="VARCHAR" />
+    <result column="bank_id" property="bankId" jdbcType="INTEGER" />
+    <result column="card_num" property="cardNum" jdbcType="VARCHAR" />
+    <result column="card_address" property="cardAddress" jdbcType="VARCHAR" />
+    <result column="add_time" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="is_delete" property="isDelete" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, uid, card_username, bank_id, card_num, card_address, add_time, is_delete
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_user_card
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_user_card
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.sky.pay.entity.UserCard" >
+    insert into t_user_card (id, uid, card_username, 
+      bank_id, card_num, card_address, 
+      add_time, is_delete)
+    values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{cardUsername,jdbcType=VARCHAR}, 
+      #{bankId,jdbcType=INTEGER}, #{cardNum,jdbcType=VARCHAR}, #{cardAddress,jdbcType=VARCHAR}, 
+      #{addTime,jdbcType=TIMESTAMP}, #{isDelete,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sky.pay.entity.UserCard" >
+    insert into t_user_card
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="cardUsername != null" >
+        card_username,
+      </if>
+      <if test="bankId != null" >
+        bank_id,
+      </if>
+      <if test="cardNum != null" >
+        card_num,
+      </if>
+      <if test="cardAddress != null" >
+        card_address,
+      </if>
+      <if test="addTime != null" >
+        add_time,
+      </if>
+      <if test="isDelete != null" >
+        is_delete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="cardUsername != null" >
+        #{cardUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="bankId != null" >
+        #{bankId,jdbcType=INTEGER},
+      </if>
+      <if test="cardNum != null" >
+        #{cardNum,jdbcType=VARCHAR},
+      </if>
+      <if test="cardAddress != null" >
+        #{cardAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sky.pay.entity.UserCard" >
+    update t_user_card
+    <set >
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="cardUsername != null" >
+        card_username = #{cardUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="bankId != null" >
+        bank_id = #{bankId,jdbcType=INTEGER},
+      </if>
+      <if test="cardNum != null" >
+        card_num = #{cardNum,jdbcType=VARCHAR},
+      </if>
+      <if test="cardAddress != null" >
+        card_address = #{cardAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sky.pay.entity.UserCard" >
+    update t_user_card
+    set uid = #{uid,jdbcType=INTEGER},
+      card_username = #{cardUsername,jdbcType=VARCHAR},
+      bank_id = #{bankId,jdbcType=INTEGER},
+      card_num = #{cardNum,jdbcType=VARCHAR},
+      card_address = #{cardAddress,jdbcType=VARCHAR},
+      add_time = #{addTime,jdbcType=TIMESTAMP},
+      is_delete = #{isDelete,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="findByPage" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_user_card
+    where is_delete=0 order by add_time desc limit ${(currentPage-1)*pageCount},#{pageCount}
+  </select>
+
+  <select id="sumTotalCount" resultType="Integer">
+    select count(1) from t_user_card where is_delete=0
+  </select>
+
+  <select id="getBankCardsByUid" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_user_card
+    where is_delete=0 and uid = #{uid} order by add_time desc
+  </select>
+</mapper>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sky.member.mapper.RuserMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.sky.member.entity.RuserEntity" id="userMap">
+        <result property="id" column="id"/>
+        <result property="loginName" column="login_name"/>
+        <result property="name" column="name"/>
+        <result property="password" column="password"/>
+        <result property="salt" column="salt"/>
+        <result property="sex" column="sex"/>
+        <result property="age" column="age"/>
+        <result property="phone" column="phone"/>
+        <result property="userType" column="user_type"/>
+        <result property="status" column="status"/>
+        <result property="organizationId" column="organization_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="cid" column="cid"/>
+        <result property="type" column="type"/>
+		<collection property="roleSet" resultMap="com.sky.member.mapper.RoleMapper.roleMap" />
+    </resultMap>
+	<select id="queryRuserEntity" resultMap="userMap">
+		select * from user where login_name = #{loginName} and password=#{password}
+	</select>
+
+	<select id="queryObject" resultMap="userMap">
+		select * from user where id = #{id}
+	</select>
+
+	<select id="queryByUsername" resultMap="userMap">
+		select * from user where login_name = #{username}
+	</select>
+
+	<select id="queryList" resultMap="userMap">
+		select * from user
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from user
+	</select>
+	 
+	<insert id="save" parameterType="com.sky.member.entity.RuserEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into user
+		(
+			`login_name`, 
+			`name`, 
+			`password`, 
+			`salt`, 
+			`sex`, 
+			`age`, 
+			`phone`, 
+			`user_type`, 
+			`status`, 
+			`organization_id`, 
+			`create_time`, 
+			`cid`, 
+			`type`
+		)
+		values
+		(
+			#{loginName}, 
+			#{name}, 
+			#{password}, 
+			#{salt}, 
+			#{sex}, 
+			#{age}, 
+			#{phone}, 
+			#{userType}, 
+			#{status}, 
+			#{organizationId}, 
+			now() ,
+			#{cid}, 
+			#{type}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.sky.member.entity.RuserEntity">
+		update user
+		<set>
+			<if test="loginName != null">`login_name` = #{loginName}, </if>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="password != null">`password` = #{password}, </if>
+			<if test="salt != null">`salt` = #{salt}, </if>
+			<if test="sex != null">`sex` = #{sex}, </if>
+			<if test="age != null">`age` = #{age}, </if>
+			<if test="phone != null">`phone` = #{phone}, </if>
+			<if test="userType != null">`user_type` = #{userType}, </if>
+			<if test="status != null">`status` = #{status}, </if>
+			<if test="organizationId != null">`organization_id` = #{organizationId}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="cid != null">`cid` = #{cid}, </if>
+			<if test="type != null">`type` = #{type}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from user where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from user where id in
+		<foreach collection="array" item="id" index="index"
+				 open="(" close=")" separator=",">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

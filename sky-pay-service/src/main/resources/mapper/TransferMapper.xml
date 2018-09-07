@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sky.pay.mapper.TransferMapper" >
+  <resultMap id="BaseResultMap" type="com.sky.pay.entity.Transfer" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="uid" property="uid" jdbcType="INTEGER" />
+    <result column="billno" property="billno" jdbcType="VARCHAR" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="t_type" property="tType" jdbcType="VARCHAR" />
+    <result column="t_money" property="tMoney" jdbcType="REAL" />
+    <result column="old_money" property="oldMoney" jdbcType="REAL" />
+    <result column="new_money" property="newMoney" jdbcType="REAL" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="t_time" property="tTime" jdbcType="TIMESTAMP" />
+    <result column="ip" property="ip" jdbcType="VARCHAR" />
+    <result column="result" property="result" jdbcType="VARCHAR" />
+    <result column="cagent" property="cagent" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, uid, billno, username, t_type, t_money, old_money, new_money, type, t_time, ip, 
+    result, cagent
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_transfer
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_transfer
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.sky.pay.entity.Transfer" >
+    insert into t_transfer (id, uid, billno, 
+      username, t_type, t_money, 
+      old_money, new_money, type, 
+      t_time, ip, result, 
+      cagent)
+    values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{billno,jdbcType=VARCHAR}, 
+      #{username,jdbcType=VARCHAR}, #{tType,jdbcType=VARCHAR}, #{tMoney,jdbcType=REAL}, 
+      #{oldMoney,jdbcType=REAL}, #{newMoney,jdbcType=REAL}, #{type,jdbcType=VARCHAR}, 
+      #{tTime,jdbcType=TIMESTAMP}, #{ip,jdbcType=VARCHAR}, #{result,jdbcType=VARCHAR}, 
+      #{cagent,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sky.pay.entity.Transfer" >
+    insert into t_transfer
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="billno != null" >
+        billno,
+      </if>
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="tType != null" >
+        t_type,
+      </if>
+      <if test="tMoney != null" >
+        t_money,
+      </if>
+      <if test="oldMoney != null" >
+        old_money,
+      </if>
+      <if test="newMoney != null" >
+        new_money,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="tTime != null" >
+        t_time,
+      </if>
+      <if test="ip != null" >
+        ip,
+      </if>
+      <if test="result != null" >
+        result,
+      </if>
+      <if test="cagent != null" >
+        cagent,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="billno != null" >
+        #{billno,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="tType != null" >
+        #{tType,jdbcType=VARCHAR},
+      </if>
+      <if test="tMoney != null" >
+        #{tMoney,jdbcType=REAL},
+      </if>
+      <if test="oldMoney != null" >
+        #{oldMoney,jdbcType=REAL},
+      </if>
+      <if test="newMoney != null" >
+        #{newMoney,jdbcType=REAL},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="tTime != null" >
+        #{tTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ip != null" >
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="result != null" >
+        #{result,jdbcType=VARCHAR},
+      </if>
+      <if test="cagent != null" >
+        #{cagent,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sky.pay.entity.Transfer" >
+    update t_transfer
+    <set >
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="billno != null" >
+        billno = #{billno,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="tType != null" >
+        t_type = #{tType,jdbcType=VARCHAR},
+      </if>
+      <if test="tMoney != null" >
+        t_money = #{tMoney,jdbcType=REAL},
+      </if>
+      <if test="oldMoney != null" >
+        old_money = #{oldMoney,jdbcType=REAL},
+      </if>
+      <if test="newMoney != null" >
+        new_money = #{newMoney,jdbcType=REAL},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="tTime != null" >
+        t_time = #{tTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ip != null" >
+        ip = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="result != null" >
+        result = #{result,jdbcType=VARCHAR},
+      </if>
+      <if test="cagent != null" >
+        cagent = #{cagent,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sky.pay.entity.Transfer" >
+    update t_transfer
+    set uid = #{uid,jdbcType=INTEGER},
+      billno = #{billno,jdbcType=VARCHAR},
+      username = #{username,jdbcType=VARCHAR},
+      t_type = #{tType,jdbcType=VARCHAR},
+      t_money = #{tMoney,jdbcType=REAL},
+      old_money = #{oldMoney,jdbcType=REAL},
+      new_money = #{newMoney,jdbcType=REAL},
+      type = #{type,jdbcType=VARCHAR},
+      t_time = #{tTime,jdbcType=TIMESTAMP},
+      ip = #{ip,jdbcType=VARCHAR},
+      result = #{result,jdbcType=VARCHAR},
+      cagent = #{cagent,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="findByPage" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_transfer
+    where 1=1 order by t_money desc limit ${(currentPage-1)*pageCount},#{pageCount}
+  </select>
+
+  <select id="sumTotalCount" resultType="Integer">
+    select count(1) from t_transfer
+  </select>
+</mapper>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sky.site.info.mapper.ContactConfigVOMapper">
+    <resultMap id="BaseResultMap" type="com.sky.site.info.entity.ContactConfigVO">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="cagent" property="cagent" jdbcType="VARCHAR"/>
+        <result column="qq" property="qq" jdbcType="VARCHAR"/>
+        <result column="wechat" property="wechat" jdbcType="VARCHAR"/>
+        <result column="qqcode" property="qqcode" jdbcType="VARCHAR"/>
+        <result column="wechatcode" property="wechatcode" jdbcType="VARCHAR"/>
+        <result column="customer" property="customer" jdbcType="VARCHAR"/>
+        <result column="website" property="website" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+      id, cagent, qq, wechat, qqcode, wechatcode, customer, website
+    </sql>
+
+    <!--获取平台联系方式：-->
+    <select timeout="20" id="selectContactByCagent" parameterType="java.util.Map"
+            resultType="com.sky.site.info.entity.ContactConfigVO">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+          t_contact_config
+        WHERE cagent = #{cagent}
+        <if test="website!=null and website!=''">
+          AND website = #{website}
+        </if>
+    </select>
+
+</mapper>

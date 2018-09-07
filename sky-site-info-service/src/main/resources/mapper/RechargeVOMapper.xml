@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sky.site.info.mapper.RechargeVOMapper">
+    <resultMap id="BaseResultMap" type="com.sky.site.info.entity.RechargeVO">
+        <id column="r_id" property="rId" jdbcType="INTEGER"/>
+        <result column="uid" property="uid" jdbcType="INTEGER"/>
+        <result column="pay_type" property="payType" jdbcType="TINYINT"/>
+        <result column="bank_code" property="bankCode" jdbcType="VARCHAR"/>
+        <result column="order_no" property="orderNo" jdbcType="VARCHAR"/>
+        <result column="order_amount" property="orderAmount" jdbcType="REAL"/>
+        <result column="order_time" property="orderTime" jdbcType="TIMESTAMP"/>
+        <result column="trade_status" property="tradeStatus" jdbcType="VARCHAR"/>
+        <result column="trade_no" property="tradeNo" jdbcType="VARCHAR"/>
+        <result column="ip" property="ip" jdbcType="VARCHAR"/>
+        <result column="finish_time" property="finishTime" jdbcType="TIMESTAMP"/>
+        <result column="merchant" property="merchant" jdbcType="VARCHAR"/>
+        <result column="upuid" property="upuid" jdbcType="INTEGER"/>
+        <result column="pay_id" property="payId" jdbcType="INTEGER"/>
+        <result column="cagent" property="cagent" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    r_id, uid, pay_type, bank_code, order_no, order_amount, order_time, trade_status, 
+    trade_no, ip, finish_time, merchant, upuid, pay_id, cagent
+    </sql>
+
+    <select timeout="20" id="selectReChargeCount" parameterType="java.util.Map"
+            resultType="java.util.Map">
+        select count(1) cnt,sum(order_amount) total,trade_status from ( select uid,
+        order_time,
+        pay_type,
+        order_amount,
+        trade_status,
+        pay_type type,
+        '无' As rmk
+        from
+        t_recharge
+        <trim prefix="where" prefixOverrides="and">
+        <if test="uid != null and uid !=''">
+            uid = #{uid}
+        </if>
+        <if test="bdate != null and bdate !=''">
+            and DATE_FORMAT(order_time, '%Y-%m-%d') BETWEEN #{bdate}
+            and #{edate}
+        </if>
+        </trim>
+        union all
+        select uid,
+        addtime as order_time,
+        '4' as pay_type,
+        amount AS order_amount,
+        status,
+        '4' AS type,
+        '无' As rmk from t_amount_record
+        <trim prefix="where" prefixOverrides="and">
+        <if test="uid != null and uid !=''">
+            uid = #{uid}
+        </if>
+        <if test="bdate != null and bdate !=''">
+            and DATE_FORMAT(addtime, '%Y-%m-%d') BETWEEN #{bdate} and
+            #{edate}
+        </if>
+        </trim>
+        )a
+        <trim prefix="where" prefixOverrides="and">
+        <if test="type != null and type !=''">
+            pay_type = #{type}
+        </if>
+        <if test="status != null and status !=''">
+            and trade_status = #{status}
+        </if>
+        </trim>
+    </select>
+
+    <select id="selectByStatusPage" resultMap="BaseResultMap" parameterType="java.util.Map">
+        select * from ( select uid,
+        order_time,
+        pay_type,
+        order_amount,
+        trade_status,
+        pay_type type,
+        '无' As rmk
+        from
+        t_recharge
+        <trim prefix="where" prefixOverrides="and">
+        <if test="uid != null and uid !=''">
+            uid = #{uid}
+        </if>
+        <if test="bdate != null and bdate !=''">
+            and DATE_FORMAT(order_time, '%Y-%m-%d') BETWEEN #{bdate}
+            and #{edate}
+        </if>
+        </trim>
+        union all
+        select uid,
+        addtime as order_time,
+        '4' as pay_type,
+        amount AS order_amount,
+        status,
+        '4' AS type,
+        '无' As rmk from t_amount_record
+        <trim prefix="where" prefixOverrides="and">
+        <if test="uid != null and uid !=''">
+            uid = #{uid}
+        </if>
+        <if test="bdate != null and bdate !=''">
+            and DATE_FORMAT(addtime, '%Y-%m-%d') BETWEEN #{bdate} and
+            #{edate}
+        </if>
+        </trim>
+        )a
+        <trim prefix="where" prefixOverrides="and">
+
+        <if test="type != null and type !=''">
+            pay_type = #{type}
+        </if>
+        <if test="status != null and status !=''">
+            and trade_status = #{status}
+        </if>
+        ORDER BY order_time DESC
+        <if test="starLimit != null and pageSize !=''">
+            LIMIT #{starLimit},#{pageSize}
+        </if>
+        </trim>
+    </select>
+
+</mapper>

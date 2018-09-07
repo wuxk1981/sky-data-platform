@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sky.site.info.mapper.WebComConfigVOMapper">
+    <resultMap id="BaseResultMap" type="com.sky.site.info.entity.WebComConfigVO">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="type" property="type" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="weight" property="weight" jdbcType="INTEGER"/>
+        <result column="status" property="status" jdbcType="CHAR"/>
+        <result column="img1" property="img1" jdbcType="VARCHAR"/>
+        <result column="src1" property="src1" jdbcType="VARCHAR"/>
+        <result column="img2" property="img2" jdbcType="VARCHAR"/>
+        <result column="rmk" property="rmk" jdbcType="VARCHAR"/>
+        <result column="updatetime" property="updatetime" jdbcType="TIMESTAMP"/>
+        <result column="userid" property="userid" jdbcType="VARCHAR"/>
+        <result column="img3" property="img3" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+      id, type, name, title, weight, status, img1, src1, img2, rmk, date_format(updatetime,'%Y-%m-%d %H:%i:%s') as updatetime, userid, img3
+    </sql>
+
+    <!--获取优惠信息-->
+    <select id="selectDiscountInfoByCagent" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+        id, type, name, title, weight, status, img1, src1, img2, rmk, date_format(updatetime,'%Y-%m-%d %H:%i:%s') as updatetime, userid, img3
+        FROM t_webcom_config
+        where
+          status=1 and type=#{type}
+        <if test="cagent != null and cagent !=''">
+            AND userid=#{cagent}
+        </if>
+        ORDER BY type,weight desc
+    </select>
+
+    <!--获取轮播广告图-->
+    <select timeout="20" id="selectCarouselFigureByCagent" parameterType="java.util.Map" resultType="java.util.Map">
+        Select
+          type,title,img1,img2,src1,weight,rmk
+        from t_webcom_config
+        where
+        status=1 and type=#{type}
+        <if test="cagent != null and cagent !=''">
+            AND userid=#{cagent}
+        </if>
+          ORDER BY type,weight desc
+    </select>
+
+    <!--获取手机端网站图片-->
+    <select timeout="20" id="selectMobileWebComConfigByCagent" parameterType="java.util.Map"
+            resultType="java.util.Map">
+        SELECT
+          <include refid="Base_Column_List"/>
+        FROM t_webcom_config WHERE `status`=1
+        <if test="type != null and type !=''">
+            AND type = #{type}
+        </if>
+        <if test="id != null and id !=''">
+            AND id = #{id}
+        </if>
+        <if test="cagent != null and cagent !=''">
+            AND userid = #{cagent}
+        </if>
+        ORDER BY type,weight desc
+    </select>
+</mapper>

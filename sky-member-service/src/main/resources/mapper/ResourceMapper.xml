@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sky.member.mapper.ResourceMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.sky.member.entity.ResourceEntity" id="resourceMap">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="url" column="url"/>
+        <result property="openMode" column="open_mode"/>
+        <result property="description" column="description"/>
+        <result property="icon" column="icon"/>
+        <result property="pid" column="pid"/>
+        <result property="seq" column="seq"/>
+        <result property="status" column="status"/>
+        <result property="opened" column="opened"/>
+        <result property="resourceType" column="resource_type"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+	<select id="queryObject" resultMap="resourceMap">
+		select id,name,url,open_mode,description,icon,pid,seq,status,opened,resource_type,create_time
+       from resource where id = #{id}
+	</select>
+
+	<select id="queryResourcesByRoleId" resultMap="resourceMap">
+		select id,name,url,open_mode,description,icon,pid,seq,status,opened,resource_type,create_time
+       from resource where id  in ( select resource_id from role_resource where role_id =#{roleId})
+	</select>
+
+	<select id="queryResourceByUserId" resultMap="resourceMap">
+		select id,name,url,open_mode,description,icon,pid,seq,status,opened,resource_type,create_time
+       from resource where id  in ( select resource_id from role_resource where role_id
+       in ( select role_id from user_role where user_id=#{userId}  ))
+
+	</select>
+
+	<select id="queryResourceByPreResId" resultMap="resourceMap">
+		select id,name,url,open_mode,description,icon,pid,seq,status,opened,resource_type,create_time
+       from resource where pid  =#{pId}
+	</select>
+
+	<select id="queryList" resultMap="resourceMap">
+		select * from resource
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from resource 
+	</select>
+	 
+	<insert id="save" parameterType="com.sky.member.entity.ResourceEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into resource
+		(
+			`name`, 
+			`url`, 
+			`open_mode`, 
+			`description`, 
+			`icon`, 
+			`pid`, 
+			`seq`, 
+			`status`, 
+			`opened`, 
+			`resource_type`, 
+			`create_time`
+		)
+		values
+		(
+			#{name}, 
+			#{url}, 
+			#{openMode}, 
+			#{description}, 
+			#{icon}, 
+			#{pid},
+		<choose>
+			<when test="seq != null and seq  !=''">
+				#{seq},
+			</when>
+			<otherwise>
+				0,
+			</otherwise>
+		</choose>
+		<choose>
+			<when test="status != null and status  !=''">
+				#{opened},
+			</when>
+			<otherwise>
+				0,
+			</otherwise>
+		</choose>
+		<choose>
+			<when test="opened != null and opened  !=''">
+				#{opened},
+			</when>
+			<otherwise>
+				1,
+			</otherwise>
+		</choose>
+		<choose>
+			<when test="resourceType != null and resourceType  !=''">
+				#{resourceType},
+			</when>
+			<otherwise>
+				0,
+			</otherwise>
+		</choose>
+
+			now()
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.sky.member.entity.ResourceEntity">
+		update resource 
+		<set>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="url != null">`url` = #{url}, </if>
+			<if test="openMode != null">`open_mode` = #{openMode}, </if>
+			<if test="description != null">`description` = #{description}, </if>
+			<if test="icon != null">`icon` = #{icon}, </if>
+			<if test="pid != null">`pid` = #{pid}, </if>
+			<if test="seq != null">`seq` = #{seq}, </if>
+			<if test="status != null">`status` = #{status}, </if>
+			<if test="opened != null">`opened` = #{opened}, </if>
+			<if test="resourceType != null">`resource_type` = #{resourceType}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from resource where id = #{id}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from resource where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

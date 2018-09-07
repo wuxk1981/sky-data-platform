@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sky.member.mapper.TUserCardMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.sky.member.entity.TUserCardEntity" id="tUserCardMap">
+        <result property="id" column="id"/>
+        <result property="uid" column="uid"/>
+        <result property="cardUsername" column="card_username"/>
+        <result property="bankId" column="bank_id"/>
+        <result property="cardNum" column="card_num"/>
+        <result property="cardAddress" column="card_address"/>
+        <result property="addTime" column="add_time"/>
+        <result property="isDelete" column="is_delete"/>
+    </resultMap>
+	<delete timeout="20" id="deleteUserCard" parameterType="java.util.Map">
+		delete from t_user_card where id=#{id} ;
+	</delete>
+	<insert timeout="20" id="insertUserCard" parameterType="java.util.Map">
+		insert into t_user_card
+		(uid,card_username,bank_id,card_num,card_address,add_time,is_delete)
+		VALUES(#{uid},#{cardusername},#{bankid},#{cardnum},#{cardaddress},NOW(),'0')
+		;
+	</insert>
+
+	<select timeout="20" id="selectUserCard" resultType="java.util.Map">
+		select SQL_NO_CACHE a.id,a.card_username,b.bank_name,CONCAT(
+		LEFT(a.card_num,4),'***********',RIGHT(a.card_num,4),'')
+		card_num,a.card_address from t_user_card a
+		left join t_card_type b on
+		a.bank_id=b.bank_id where a.uid = #{uid}
+		<if test="id != null and id !=''">
+			AND a.`id` = #{id}
+		</if>
+		<if test="Ttime != null and Ttime !=''">
+			and #{Ttime} =#{Ttime}
+		</if>
+	</select>
+
+	<select id="queryObject" resultMap="tUserCardMap">
+		select * from t_user_card where id = #{value}
+	</select>
+
+	<select id="queryList" resultMap="tUserCardMap">
+		select * from t_user_card
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from t_user_card 
+	</select>
+	 
+	<insert id="save" parameterType="com.sky.member.entity.TUserCardEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into t_user_card
+		(
+			`uid`, 
+			`card_username`, 
+			`bank_id`, 
+			`card_num`, 
+			`card_address`, 
+			`add_time`, 
+			`is_delete`
+		)
+		values
+		(
+			#{uid}, 
+			#{cardUsername}, 
+			#{bankId}, 
+			#{cardNum}, 
+			#{cardAddress}, 
+			#{addTime}, 
+			#{isDelete}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.sky.member.entity.TUserCardEntity">
+		update t_user_card 
+		<set>
+			<if test="uid != null">`uid` = #{uid}, </if>
+			<if test="cardUsername != null">`card_username` = #{cardUsername}, </if>
+			<if test="bankId != null">`bank_id` = #{bankId}, </if>
+			<if test="cardNum != null">`card_num` = #{cardNum}, </if>
+			<if test="cardAddress != null">`card_address` = #{cardAddress}, </if>
+			<if test="addTime != null">`add_time` = #{addTime}, </if>
+			<if test="isDelete != null">`is_delete` = #{isDelete}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from t_user_card where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from t_user_card where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

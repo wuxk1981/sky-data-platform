@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sky.site.info.mapper.WithdrawVOMapper" >
+  <resultMap id="BaseResultMap" type="com.sky.site.info.entity.WithdrawVO" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="cid" property="cid" jdbcType="INTEGER" />
+    <result column="uid" property="uid" jdbcType="INTEGER" />
+    <result column="billNo" property="billno" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="REAL" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="add_time" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="bankname" property="bankname" jdbcType="VARCHAR" />
+    <result column="cardNo" property="cardno" jdbcType="VARCHAR" />
+    <result column="totaltimes" property="totaltimes" jdbcType="INTEGER" />
+    <result column="todaytimes" property="todaytimes" jdbcType="INTEGER" />
+    <result column="poundage" property="poundage" jdbcType="REAL" />
+    <result column="administrative_fee" property="administrativeFee" jdbcType="REAL" />
+    <result column="amount_paid" property="amountPaid" jdbcType="REAL" />
+    <result column="vuid" property="vuid" jdbcType="INTEGER" />
+    <result column="vtime" property="vtime" jdbcType="TIMESTAMP" />
+    <result column="rmk" property="rmk" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="marking_quantity" property="markingQuantity" jdbcType="DOUBLE" />
+    <result column="user_quantity" property="userQuantity" jdbcType="DOUBLE" />
+    <result column="issued_name" property="issuedName" jdbcType="VARCHAR" />
+    <result column="issued_time" property="issuedTime" jdbcType="TIMESTAMP" />
+    <result column="issued_payer_id" property="issuedPayerId" jdbcType="VARCHAR" />
+    <result column="issued_status" property="issuedStatus" jdbcType="INTEGER" />
+    <result column="payer_result" property="payerResult" jdbcType="VARCHAR" />
+    <result column="issued_ip" property="issuedIp" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="cagent" property="cagent" jdbcType="VARCHAR" />
+    <result column="phoneNo" property="phoneno" jdbcType="VARCHAR" />
+    <result column="zjNO" property="zjno" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, cid, uid, billNo, amount, status, add_time, username, bankname, cardNo, totaltimes, 
+    todaytimes, poundage, administrative_fee, amount_paid, vuid, vtime, rmk, remark, 
+    marking_quantity, user_quantity, issued_name, issued_time, issued_payer_id, issued_status, 
+    payer_result, issued_ip, address, cagent, phoneNo, zjNO
+  </sql>
+
+  <select timeout="20" id="selectWithDrawCount" parameterType="java.util.Map"
+          resultType="java.util.Map">
+    SELECT count(1) cnt,sum(amount) total FROM t_withdraw where
+    DATE_FORMAT(add_time, '%Y-%m-%d') BETWEEN #{bdate} and #{edate}
+    <if test="uid != null and uid !=''">
+      AND uid = #{uid}
+    </if>
+    <if test="status != null and status !=''">
+      AND `status` = #{status}
+    </if>
+  </select>
+
+  <select timeout="20" id="selectWithDrawPage" parameterType="java.util.Map"
+          resultType="java.util.Map">
+    select a.add_time,a.cardNo as card_num,a.amount,a.remark,a.rmk,poundage,administrative_fee,amount_paid,
+    case
+    a.`status` when '0' then
+    '处理中' when '1' then '已通过' when '2' then '未通过'
+    else '未知' end status
+    from t_withdraw a
+    left join t_user_card b on
+    a.cardNo=b.id where
+    DATE_FORMAT(a.add_time, '%Y-%m-%d') BETWEEN
+    #{bdate} and #{edate}
+    <if test="uid != null and uid !=''">
+      AND a.uid = #{uid}
+    </if>
+    <if test="status != null and status !=''">
+      AND a.`status` = #{status}
+    </if>
+    ORDER BY a.add_time DESC
+    LIMIT #{starLimit},#{pageSize}
+  </select>
+
+</mapper>

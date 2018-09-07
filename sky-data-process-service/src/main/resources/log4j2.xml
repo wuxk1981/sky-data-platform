@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Properties>
+        <Property name="PID">????</Property>
+        <Property name="LOG_EXCEPTION_CONVERSION_WORD">%xwEx</Property>
+        <Property name="LOG_LEVEL_PATTERN">%5p</Property>
+        <Property name="logFormat">
+            %d{yyyy-MM-dd HH:mm:ss.SSS} ${LOG_LEVEL_PATTERN} [@project.artifactId@,%X{X-B3-TraceId},%X{X-B3-SpanId},%X{X-Span-Export}] ${sys:PID} --- [%15.15t] %-40.40c{1.} : %m%n${sys:LOG_EXCEPTION_CONVERSION_WORD}
+        </Property>
+        <Property name="kafkaBootstrapServers">
+            @kafka.bootstrap.servers@
+        </Property>
+    </Properties>
+    <Appenders>
+        <Console name="STDOUT" target="SYSTEM_OUT">
+            <PatternLayout pattern="${logFormat}"/>
+        </Console>
+
+        <RollingFile name="RollingFile" fileName="logs/@project.artifactId@.log"
+                     filePattern="logs/@project.artifactId@.%d{yyyy-MM-dd}.log">
+            <PatternLayout>
+                <Pattern>
+                    ${logFormat}
+                </Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+        </RollingFile>
+
+        <Kafka name="basicLog" topic="basic-log">
+            <PatternLayout>
+                <Pattern>
+                    ${logFormat}
+                </Pattern>
+            </PatternLayout>
+            <Property name="bootstrap.servers">${kafkaBootstrapServers}</Property>
+        </Kafka>
+
+        <Async name="FileAsync">
+            <AppenderRef ref="RollingFile"/>
+        </Async>
+
+        <Async name="basicLogAsync">
+            <AppenderRef ref="basicLog"/>
+        </Async>
+    </Appenders>
+    <Loggers>
+        <Logger name="org.apache.kafka" level="info"/>
+        <Root level="info">
+            <AppenderRef ref="STDOUT"/>
+            <AppenderRef ref="FileAsync"/>
+            <AppenderRef ref="basicLogAsync"/>
+        </Root>
+    </Loggers>
+</Configuration>

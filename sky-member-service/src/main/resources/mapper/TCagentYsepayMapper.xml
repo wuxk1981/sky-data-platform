@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sky.member.mapper.TCagentYsepayMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.sky.member.entity.TCagentYsepayEntity" id="tCagentYsepayMap">
+        <result property="id" column="id"/>
+        <result property="cid" column="cid"/>
+        <result property="pathParterPkcs12" column="path_parter_pkcs12"/>
+        <result property="passwordParterPkcs12" column="password_parter_pkcs12"/>
+        <result property="pathYsepayPublicCert" column="path_ysepay_public_cert"/>
+        <result property="rsaAlgorithm" column="rsa_algorithm"/>
+        <result property="signAlgorithm" column="sign_algorithm"/>
+        <result property="defaultCharset" column="default_charset"/>
+        <result property="partnerId" column="partner_id"/>
+        <result property="sellerId" column="seller_id"/>
+        <result property="sellerName" column="seller_name"/>
+        <result property="version" column="version"/>
+        <result property="ysepayGetwayUrl" column="ysepay_getway_url"/>
+        <result property="ysepayGetwayUrlDf" column="ysepay_getway_url_df"/>
+        <result property="notifyUrl" column="notify_url"/>
+        <result property="retrunUrl" column="retrun_url"/>
+        <result property="updatetime" column="updatetime"/>
+        <result property="uid" column="uid"/>
+        <result property="type" column="type"/>
+        <result property="minquota" column="minquota"/>
+        <result property="maxquota" column="maxquota"/>
+        <result property="qrmaxquota" column="qrmaxquota"/>
+        <result property="qrminquota" column="qrminquota"/>
+        <result property="dayquota" column="dayquota"/>
+        <result property="dividendRate" column="dividend_rate"/>
+        <result property="codingRate" column="coding_rate"/>
+        <result property="status" column="status"/>
+        <result property="rmk" column="rmk"/>
+        <result property="channel" column="channel"/>
+        <result property="payUrl" column="pay_url"/>
+        <result property="paymentName" column="payment_name"/>
+        <result property="paymentConfig" column="payment_config"/>
+        <result property="aliMinquota" column="ali_minquota"/>
+        <result property="aliMaxquota" column="ali_maxquota"/>
+        <result property="wxMinquota" column="wx_minquota"/>
+        <result property="wxMaxquota" column="wx_maxquota"/>
+        <result property="caIndex" column="ca_index"/>
+        <result property="isIssued" column="is_issued"/>
+        <result property="ylMaxquota" column="yl_maxquota"/>
+        <result property="ylMinquota" column="yl_minquota"/>
+        <result property="jdMaxquota" column="jd_maxquota"/>
+        <result property="jdMinquota" column="jd_minquota"/>
+        <result property="kjMaxquota" column="kj_maxquota"/>
+        <result property="kjMinquota" column="kj_minquota"/>
+        <result property="ish5Ali" column="ish5_ali"/>
+        <result property="ish5Wx" column="ish5_wx"/>
+        <result property="ish5Cft" column="ish5_cft"/>
+        <result property="ish5Jd" column="ish5_jd"/>
+        <result property="ish5Yl" column="ish5_yl"/>
+        <result property="wxtmMinquota" column="wxtm_minquota"/>
+        <result property="wxtmMaxquota" column="wxtm_maxquota"/>
+        <result property="alitmMinquota" column="alitm_minquota"/>
+        <result property="alitmMaxquota" column="alitm_maxquota"/>
+    </resultMap>
+
+	<select timeout="20" id="getYsepayConfig" parameterType="java.lang.String"
+			resultType="java.util.Map">
+		select c.* from t_user a
+		join t_user_type b on a.type_id=b.id
+		join
+		t_cagent_ysepay c on
+		b.onlinepay_id=c.id
+		where c.status=0 and
+		a.username=#{username}
+	</select>
+
+
+	<select id="queryObject" resultMap="tCagentYsepayMap">
+		select * from t_cagent_ysepay where id = #{id}
+	</select>
+
+	<select id="queryList" resultMap="tCagentYsepayMap">
+		select * from t_cagent_ysepay
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from t_cagent_ysepay 
+	</select>
+	 
+	<insert id="save" parameterType="com.sky.member.entity.TCagentYsepayEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into t_cagent_ysepay
+		(
+			`cid`, 
+			`path_parter_pkcs12`, 
+			`password_parter_pkcs12`, 
+			`path_ysepay_public_cert`, 
+			`rsa_algorithm`, 
+			`sign_algorithm`, 
+			`default_charset`, 
+			`partner_id`, 
+			`seller_id`, 
+			`seller_name`, 
+			`version`, 
+			`ysepay_getway_url`, 
+			`ysepay_getway_url_df`, 
+			`notify_url`, 
+			`retrun_url`, 
+			`updatetime`, 
+			`uid`, 
+			`type`, 
+			`minquota`, 
+			`maxquota`, 
+			`qrmaxquota`, 
+			`qrminquota`, 
+			`dayquota`, 
+			`dividend_rate`, 
+			`coding_rate`, 
+			`status`, 
+			`rmk`, 
+			`channel`, 
+			`pay_url`, 
+			`payment_name`, 
+			`payment_config`, 
+			`ali_minquota`, 
+			`ali_maxquota`, 
+			`wx_minquota`, 
+			`wx_maxquota`, 
+			`ca_index`, 
+			`is_issued`, 
+			`yl_maxquota`, 
+			`yl_minquota`, 
+			`jd_maxquota`, 
+			`jd_minquota`, 
+			`kj_maxquota`, 
+			`kj_minquota`, 
+			`ish5_ali`, 
+			`ish5_wx`, 
+			`ish5_cft`, 
+			`ish5_jd`, 
+			`ish5_yl`, 
+			`wxtm_minquota`, 
+			`wxtm_maxquota`, 
+			`alitm_minquota`, 
+			`alitm_maxquota`
+		)
+		values
+		(
+			#{cid}, 
+			#{pathParterPkcs12}, 
+			#{passwordParterPkcs12}, 
+			#{pathYsepayPublicCert}, 
+			#{rsaAlgorithm}, 
+			#{signAlgorithm}, 
+			#{defaultCharset}, 
+			#{partnerId}, 
+			#{sellerId}, 
+			#{sellerName}, 
+			#{version}, 
+			#{ysepayGetwayUrl}, 
+			#{ysepayGetwayUrlDf}, 
+			#{notifyUrl}, 
+			#{retrunUrl}, 
+			#{updatetime}, 
+			#{uid}, 
+			#{type}, 
+			#{minquota}, 
+			#{maxquota}, 
+			#{qrmaxquota}, 
+			#{qrminquota}, 
+			#{dayquota}, 
+			#{dividendRate}, 
+			#{codingRate}, 
+			#{status}, 
+			#{rmk}, 
+			#{channel}, 
+			#{payUrl}, 
+			#{paymentName}, 
+			#{paymentConfig}, 
+			#{aliMinquota}, 
+			#{aliMaxquota}, 
+			#{wxMinquota}, 
+			#{wxMaxquota}, 
+			#{caIndex}, 
+			#{isIssued}, 
+			#{ylMaxquota}, 
+			#{ylMinquota}, 
+			#{jdMaxquota}, 
+			#{jdMinquota}, 
+			#{kjMaxquota}, 
+			#{kjMinquota}, 
+			#{ish5Ali}, 
+			#{ish5Wx}, 
+			#{ish5Cft}, 
+			#{ish5Jd}, 
+			#{ish5Yl}, 
+			#{wxtmMinquota}, 
+			#{wxtmMaxquota}, 
+			#{alitmMinquota}, 
+			#{alitmMaxquota}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.sky.member.entity.TCagentYsepayEntity">
+		update t_cagent_ysepay 
+		<set>
+			<if test="cid != null">`cid` = #{cid}, </if>
+			<if test="pathParterPkcs12 != null">`path_parter_pkcs12` = #{pathParterPkcs12}, </if>
+			<if test="passwordParterPkcs12 != null">`password_parter_pkcs12` = #{passwordParterPkcs12}, </if>
+			<if test="pathYsepayPublicCert != null">`path_ysepay_public_cert` = #{pathYsepayPublicCert}, </if>
+			<if test="rsaAlgorithm != null">`rsa_algorithm` = #{rsaAlgorithm}, </if>
+			<if test="signAlgorithm != null">`sign_algorithm` = #{signAlgorithm}, </if>
+			<if test="defaultCharset != null">`default_charset` = #{defaultCharset}, </if>
+			<if test="partnerId != null">`partner_id` = #{partnerId}, </if>
+			<if test="sellerId != null">`seller_id` = #{sellerId}, </if>
+			<if test="sellerName != null">`seller_name` = #{sellerName}, </if>
+			<if test="version != null">`version` = #{version}, </if>
+			<if test="ysepayGetwayUrl != null">`ysepay_getway_url` = #{ysepayGetwayUrl}, </if>
+			<if test="ysepayGetwayUrlDf != null">`ysepay_getway_url_df` = #{ysepayGetwayUrlDf}, </if>
+			<if test="notifyUrl != null">`notify_url` = #{notifyUrl}, </if>
+			<if test="retrunUrl != null">`retrun_url` = #{retrunUrl}, </if>
+			<if test="updatetime != null">`updatetime` = #{updatetime}, </if>
+			<if test="uid != null">`uid` = #{uid}, </if>
+			<if test="type != null">`type` = #{type}, </if>
+			<if test="minquota != null">`minquota` = #{minquota}, </if>
+			<if test="maxquota != null">`maxquota` = #{maxquota}, </if>
+			<if test="qrmaxquota != null">`qrmaxquota` = #{qrmaxquota}, </if>
+			<if test="qrminquota != null">`qrminquota` = #{qrminquota}, </if>
+			<if test="dayquota != null">`dayquota` = #{dayquota}, </if>
+			<if test="dividendRate != null">`dividend_rate` = #{dividendRate}, </if>
+			<if test="codingRate != null">`coding_rate` = #{codingRate}, </if>
+			<if test="status != null">`status` = #{status}, </if>
+			<if test="rmk != null">`rmk` = #{rmk}, </if>
+			<if test="channel != null">`channel` = #{channel}, </if>
+			<if test="payUrl != null">`pay_url` = #{payUrl}, </if>
+			<if test="paymentName != null">`payment_name` = #{paymentName}, </if>
+			<if test="paymentConfig != null">`payment_config` = #{paymentConfig}, </if>
+			<if test="aliMinquota != null">`ali_minquota` = #{aliMinquota}, </if>
+			<if test="aliMaxquota != null">`ali_maxquota` = #{aliMaxquota}, </if>
+			<if test="wxMinquota != null">`wx_minquota` = #{wxMinquota}, </if>
+			<if test="wxMaxquota != null">`wx_maxquota` = #{wxMaxquota}, </if>
+			<if test="caIndex != null">`ca_index` = #{caIndex}, </if>
+			<if test="isIssued != null">`is_issued` = #{isIssued}, </if>
+			<if test="ylMaxquota != null">`yl_maxquota` = #{ylMaxquota}, </if>
+			<if test="ylMinquota != null">`yl_minquota` = #{ylMinquota}, </if>
+			<if test="jdMaxquota != null">`jd_maxquota` = #{jdMaxquota}, </if>
+			<if test="jdMinquota != null">`jd_minquota` = #{jdMinquota}, </if>
+			<if test="kjMaxquota != null">`kj_maxquota` = #{kjMaxquota}, </if>
+			<if test="kjMinquota != null">`kj_minquota` = #{kjMinquota}, </if>
+			<if test="ish5Ali != null">`ish5_ali` = #{ish5Ali}, </if>
+			<if test="ish5Wx != null">`ish5_wx` = #{ish5Wx}, </if>
+			<if test="ish5Cft != null">`ish5_cft` = #{ish5Cft}, </if>
+			<if test="ish5Jd != null">`ish5_jd` = #{ish5Jd}, </if>
+			<if test="ish5Yl != null">`ish5_yl` = #{ish5Yl}, </if>
+			<if test="wxtmMinquota != null">`wxtm_minquota` = #{wxtmMinquota}, </if>
+			<if test="wxtmMaxquota != null">`wxtm_maxquota` = #{wxtmMaxquota}, </if>
+			<if test="alitmMinquota != null">`alitm_minquota` = #{alitmMinquota}, </if>
+			<if test="alitmMaxquota != null">`alitm_maxquota` = #{alitmMaxquota}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from t_cagent_ysepay where id = #{id}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from t_cagent_ysepay where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

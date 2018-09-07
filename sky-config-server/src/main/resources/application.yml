@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: @project.artifactId@
+  cloud:
+    config:
+      server:
+        git:
+          uri: http://192.168.0.36/tammy/sky-data-platform.git
+          searchPaths: sky-config-info
+          username: tammy
+          password: 00000000
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: guest
+    password: guest
+  profiles:
+    active: @activatedProperties@
+
+server:
+  port: 8888
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://service-registry:8761/eureka/
+

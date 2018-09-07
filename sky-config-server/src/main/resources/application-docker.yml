@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: @project.artifactId@
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/wuxk1981/online-config-center.git
+          searchPaths: sky-config-info
+          username: 593842421@qq.com
+          password: yingying521
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: guest
+    password: guest
+
+server:
+  port: 8888
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://service-registry:8761/eureka/
+

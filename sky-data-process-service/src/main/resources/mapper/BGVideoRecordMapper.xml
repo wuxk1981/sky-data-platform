@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sky.data.process.mapper.BGVideoRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.sky.data.process.entity.BGVideoRecord" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="sn" property="sn" jdbcType="VARCHAR" />
+    <result column="login_id" property="loginId" jdbcType="VARCHAR" />
+    <result column="valid_amount" property="validAmount" jdbcType="REAL" />
+    <result column="bet_amount" property="betAmount" jdbcType="REAL" />
+    <result column="amount" property="amount" jdbcType="REAL" />
+    <result column="payment" property="payment" jdbcType="REAL" />
+    <result column="module_id" property="moduleId" jdbcType="INTEGER" />
+    <result column="module_name" property="moduleName" jdbcType="VARCHAR" />
+    <result column="tran_id" property="tranId" jdbcType="INTEGER" />
+    <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="game_id" property="gameId" jdbcType="INTEGER" />
+    <result column="game_name" property="gameName" jdbcType="VARCHAR" />
+    <result column="order_from" property="orderFrom" jdbcType="VARCHAR" />
+    <result column="order_time" property="orderTime" jdbcType="TIMESTAMP" />
+    <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP" />
+    <result column="game_result" property="gameResult" jdbcType="VARCHAR" />
+    <result column="from_ip" property="fromIp" jdbcType="VARCHAR" />
+    <result column="from_addr" property="fromAddr" jdbcType="VARCHAR" />
+    <result column="order_status" property="orderStatus" jdbcType="VARCHAR" />
+    <result column="order_type" property="orderType" jdbcType="VARCHAR" />
+    <result column="issue_id" property="issueId" jdbcType="VARCHAR" />
+    <result column="play_id" property="playId" jdbcType="VARCHAR" />
+    <result column="play_name" property="playName" jdbcType="VARCHAR" />
+    <result column="cagent" property="cagent" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, sn, login_id, valid_amount, bet_amount, amount, payment, module_id, module_name, 
+    tran_id, order_id, game_id, game_name, order_from, order_time, last_update_time, 
+    game_result, from_ip, from_addr, order_status, order_type, issue_id, play_id, play_name, 
+    cagent
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from bg_video_record
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from bg_video_record
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.sky.data.process.entity.BGVideoRecord" useGeneratedKeys="true" keyProperty="id" >
+    insert into bg_video_record (sn, login_id, valid_amount, 
+      bet_amount, amount, payment, 
+      module_id, module_name, tran_id, 
+      order_id, game_id, game_name, 
+      order_from, order_time, last_update_time, 
+      game_result, from_ip, from_addr, 
+      order_status, order_type, issue_id, 
+      play_id, play_name, cagent
+      )
+    values (#{sn,jdbcType=VARCHAR}, #{loginId,jdbcType=VARCHAR}, #{validAmount,jdbcType=REAL}, 
+      #{betAmount,jdbcType=REAL}, #{amount,jdbcType=REAL}, #{payment,jdbcType=REAL}, 
+      #{moduleId,jdbcType=INTEGER}, #{moduleName,jdbcType=VARCHAR}, #{tranId,jdbcType=INTEGER}, 
+      #{orderId,jdbcType=VARCHAR}, #{gameId,jdbcType=INTEGER}, #{gameName,jdbcType=VARCHAR}, 
+      #{orderFrom,jdbcType=VARCHAR}, #{orderTime,jdbcType=TIMESTAMP}, #{lastUpdateTime,jdbcType=TIMESTAMP}, 
+      #{gameResult,jdbcType=VARCHAR}, #{fromIp,jdbcType=VARCHAR}, #{fromAddr,jdbcType=VARCHAR}, 
+      #{orderStatus,jdbcType=VARCHAR}, #{orderType,jdbcType=VARCHAR}, #{issueId,jdbcType=VARCHAR}, 
+      #{playId,jdbcType=VARCHAR}, #{playName,jdbcType=VARCHAR}, #{cagent,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.sky.data.process.entity.BGVideoRecord" useGeneratedKeys="true" keyProperty="id" >
+    insert into bg_video_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="sn != null" >
+        sn,
+      </if>
+      <if test="loginId != null" >
+        login_id,
+      </if>
+      <if test="validAmount != null" >
+        valid_amount,
+      </if>
+      <if test="betAmount != null" >
+        bet_amount,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="payment != null" >
+        payment,
+      </if>
+      <if test="moduleId != null" >
+        module_id,
+      </if>
+      <if test="moduleName != null" >
+        module_name,
+      </if>
+      <if test="tranId != null" >
+        tran_id,
+      </if>
+      <if test="orderId != null" >
+        order_id,
+      </if>
+      <if test="gameId != null" >
+        game_id,
+      </if>
+      <if test="gameName != null" >
+        game_name,
+      </if>
+      <if test="orderFrom != null" >
+        order_from,
+      </if>
+      <if test="orderTime != null" >
+        order_time,
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time,
+      </if>
+      <if test="gameResult != null" >
+        game_result,
+      </if>
+      <if test="fromIp != null" >
+        from_ip,
+      </if>
+      <if test="fromAddr != null" >
+        from_addr,
+      </if>
+      <if test="orderStatus != null" >
+        order_status,
+      </if>
+      <if test="orderType != null" >
+        order_type,
+      </if>
+      <if test="issueId != null" >
+        issue_id,
+      </if>
+      <if test="playId != null" >
+        play_id,
+      </if>
+      <if test="playName != null" >
+        play_name,
+      </if>
+      <if test="cagent != null" >
+        cagent,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="sn != null" >
+        #{sn,jdbcType=VARCHAR},
+      </if>
+      <if test="loginId != null" >
+        #{loginId,jdbcType=VARCHAR},
+      </if>
+      <if test="validAmount != null" >
+        #{validAmount,jdbcType=REAL},
+      </if>
+      <if test="betAmount != null" >
+        #{betAmount,jdbcType=REAL},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=REAL},
+      </if>
+      <if test="payment != null" >
+        #{payment,jdbcType=REAL},
+      </if>
+      <if test="moduleId != null" >
+        #{moduleId,jdbcType=INTEGER},
+      </if>
+      <if test="moduleName != null" >
+        #{moduleName,jdbcType=VARCHAR},
+      </if>
+      <if test="tranId != null" >
+        #{tranId,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="gameId != null" >
+        #{gameId,jdbcType=INTEGER},
+      </if>
+      <if test="gameName != null" >
+        #{gameName,jdbcType=VARCHAR},
+      </if>
+      <if test="orderFrom != null" >
+        #{orderFrom,jdbcType=VARCHAR},
+      </if>
+      <if test="orderTime != null" >
+        #{orderTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateTime != null" >
+        #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gameResult != null" >
+        #{gameResult,jdbcType=VARCHAR},
+      </if>
+      <if test="fromIp != null" >
+        #{fromIp,jdbcType=VARCHAR},
+      </if>
+      <if test="fromAddr != null" >
+        #{fromAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="orderStatus != null" >
+        #{orderStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="orderType != null" >
+        #{orderType,jdbcType=VARCHAR},
+      </if>
+      <if test="issueId != null" >
+        #{issueId,jdbcType=VARCHAR},
+      </if>
+      <if test="playId != null" >
+        #{playId,jdbcType=VARCHAR},
+      </if>
+      <if test="playName != null" >
+        #{playName,jdbcType=VARCHAR},
+      </if>
+      <if test="cagent != null" >
+        #{cagent,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sky.data.process.entity.BGVideoRecord" >
+    update bg_video_record
+    <set >
+      <if test="sn != null" >
+        sn = #{sn,jdbcType=VARCHAR},
+      </if>
+      <if test="loginId != null" >
+        login_id = #{loginId,jdbcType=VARCHAR},
+      </if>
+      <if test="validAmount != null" >
+        valid_amount = #{validAmount,jdbcType=REAL},
+      </if>
+      <if test="betAmount != null" >
+        bet_amount = #{betAmount,jdbcType=REAL},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=REAL},
+      </if>
+      <if test="payment != null" >
+        payment = #{payment,jdbcType=REAL},
+      </if>
+      <if test="moduleId != null" >
+        module_id = #{moduleId,jdbcType=INTEGER},
+      </if>
+      <if test="moduleName != null" >
+        module_name = #{moduleName,jdbcType=VARCHAR},
+      </if>
+      <if test="tranId != null" >
+        tran_id = #{tranId,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null" >
+        order_id = #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="gameId != null" >
+        game_id = #{gameId,jdbcType=INTEGER},
+      </if>
+      <if test="gameName != null" >
+        game_name = #{gameName,jdbcType=VARCHAR},
+      </if>
+      <if test="orderFrom != null" >
+        order_from = #{orderFrom,jdbcType=VARCHAR},
+      </if>
+      <if test="orderTime != null" >
+        order_time = #{orderTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdateTime != null" >
+        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gameResult != null" >
+        game_result = #{gameResult,jdbcType=VARCHAR},
+      </if>
+      <if test="fromIp != null" >
+        from_ip = #{fromIp,jdbcType=VARCHAR},
+      </if>
+      <if test="fromAddr != null" >
+        from_addr = #{fromAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="orderStatus != null" >
+        order_status = #{orderStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="orderType != null" >
+        order_type = #{orderType,jdbcType=VARCHAR},
+      </if>
+      <if test="issueId != null" >
+        issue_id = #{issueId,jdbcType=VARCHAR},
+      </if>
+      <if test="playId != null" >
+        play_id = #{playId,jdbcType=VARCHAR},
+      </if>
+      <if test="playName != null" >
+        play_name = #{playName,jdbcType=VARCHAR},
+      </if>
+      <if test="cagent != null" >
+        cagent = #{cagent,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sky.data.process.entity.BGVideoRecord" >
+    update bg_video_record
+    set sn = #{sn,jdbcType=VARCHAR},
+      login_id = #{loginId,jdbcType=VARCHAR},
+      valid_amount = #{validAmount,jdbcType=REAL},
+      bet_amount = #{betAmount,jdbcType=REAL},
+      amount = #{amount,jdbcType=REAL},
+      payment = #{payment,jdbcType=REAL},
+      module_id = #{moduleId,jdbcType=INTEGER},
+      module_name = #{moduleName,jdbcType=VARCHAR},
+      tran_id = #{tranId,jdbcType=INTEGER},
+      order_id = #{orderId,jdbcType=VARCHAR},
+      game_id = #{gameId,jdbcType=INTEGER},
+      game_name = #{gameName,jdbcType=VARCHAR},
+      order_from = #{orderFrom,jdbcType=VARCHAR},
+      order_time = #{orderTime,jdbcType=TIMESTAMP},
+      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      game_result = #{gameResult,jdbcType=VARCHAR},
+      from_ip = #{fromIp,jdbcType=VARCHAR},
+      from_addr = #{fromAddr,jdbcType=VARCHAR},
+      order_status = #{orderStatus,jdbcType=VARCHAR},
+      order_type = #{orderType,jdbcType=VARCHAR},
+      issue_id = #{issueId,jdbcType=VARCHAR},
+      play_id = #{playId,jdbcType=VARCHAR},
+      play_name = #{playName,jdbcType=VARCHAR},
+      cagent = #{cagent,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

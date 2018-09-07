@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sky.member.mapper.TReserveAccountMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.sky.member.entity.TReserveAccountEntity" id="tReserveAccountMap">
+        <result property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="cagent" column="cagent"/>
+        <result property="rmk" column="rmk"/>
+        <result property="addtime" column="addtime"/>
+        <result property="adduid" column="adduid"/>
+        <result property="cid" column="cid"/>
+    </resultMap>
+
+	<select id="queryObject" resultMap="tReserveAccountMap">
+		select * from t_reserve_account where id = #{id}
+	</select>
+
+	<select id="queryList" resultMap="tReserveAccountMap">
+		select * from t_reserve_account
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from t_reserve_account 
+	</select>
+	 
+	<insert id="save" parameterType="com.sky.member.entity.TReserveAccountEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into t_reserve_account
+		(
+			`username`, 
+			`cagent`, 
+			`rmk`, 
+			`addtime`, 
+			`adduid`, 
+			`cid`
+		)
+		values
+		(
+			#{username}, 
+			#{cagent}, 
+			#{rmk}, 
+			#{addtime}, 
+			#{adduid}, 
+			#{cid}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.sky.member.entity.TReserveAccountEntity">
+		update t_reserve_account 
+		<set>
+			<if test="username != null">`username` = #{username}, </if>
+			<if test="cagent != null">`cagent` = #{cagent}, </if>
+			<if test="rmk != null">`rmk` = #{rmk}, </if>
+			<if test="addtime != null">`addtime` = #{addtime}, </if>
+			<if test="adduid != null">`adduid` = #{adduid}, </if>
+			<if test="cid != null">`cid` = #{cid}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from t_reserve_account where id = #{id}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from t_reserve_account where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

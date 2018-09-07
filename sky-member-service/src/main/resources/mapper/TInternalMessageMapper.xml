@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sky.member.mapper.TInternalMessageMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.sky.member.entity.TInternalMessageEntity" id="tInternalMessageMap">
+        <result property="id" column="id"/>
+        <result property="uid" column="uid"/>
+        <result property="message" column="message"/>
+        <result property="status" column="status"/>
+        <result property="addtime" column="addtime"/>
+        <result property="adduserid" column="adduserid"/>
+    </resultMap>
+
+	<select timeout="20" id="selectMessageInfo" parameterType="java.lang.String"
+			resultType="java.util.Map">
+		select id,message,`status` from t_internal_message
+		where uid=#{uid} and
+		id=#{id}
+	</select>
+	<select timeout="20" id="deleteMessage" parameterType="java.lang.String"
+			resultType="java.util.Map">
+		delete from t_internal_message where id = #{id} and
+		uid=#{uid}
+	</select>
+	<update timeout="20" id="updateMessageInfo" parameterType="java.lang.String">
+		update t_internal_message set `status` = 1 where uid=#{uid} and
+		id=#{id} ;
+	</update>
+
+	<select id="queryObject" resultMap="tInternalMessageMap">
+		select * from t_internal_message where id = #{id}
+	</select>
+
+	<select id="queryList" resultMap="tInternalMessageMap">
+		select * from t_internal_message
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from t_internal_message 
+	</select>
+	 
+	<insert id="save" parameterType="com.sky.member.entity.TInternalMessageEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into t_internal_message
+		(
+			`uid`, 
+			`message`, 
+			`status`, 
+			`addtime`, 
+			`adduserid`
+		)
+		values
+		(
+			#{uid}, 
+			#{message}, 
+			#{status}, 
+			#{addtime}, 
+			#{adduserid}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.sky.member.entity.TInternalMessageEntity">
+		update t_internal_message 
+		<set>
+			<if test="uid != null">`uid` = #{uid}, </if>
+			<if test="message != null">`message` = #{message}, </if>
+			<if test="status != null">`status` = #{status}, </if>
+			<if test="addtime != null">`addtime` = #{addtime}, </if>
+			<if test="adduserid != null">`adduserid` = #{adduserid}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from t_internal_message where id = #{id}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from t_internal_message where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

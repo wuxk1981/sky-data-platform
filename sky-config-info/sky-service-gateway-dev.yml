@@ -1,0 +1,40 @@
+server:
+  port: 8082
+
+zuul:
+  prefix: /api/v1
+  routes:
+    sky-add-service:
+      path: /add/**
+      serviceId: sky-add-service
+    sky-auth-service:
+      path: /auth/**
+      serviceId: sky-auth-service
+    sky-data-process-service:
+      path: /data-process/**
+      serviceId: sky-data-process-service
+    sky-game-service:
+      path: /game/**
+      serviceId: sky-game-service
+    sky-integral-mall:
+      path: /integral/**
+      serviceId: sky-integral-mall
+    sky-member-service:
+      path: /member/**
+      serviceId: sky-member-service
+    sky-pay-service:
+      path: /pay/**
+      serviceId: sky-pay-service
+    sky-random-service:
+      path: /random/**
+      serviceId: sky-random-service
+    sky-site-info-service:
+      path: /site-info/**
+      serviceId: sky-site-info-service
+
+spring:
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: guest
+    password: guest

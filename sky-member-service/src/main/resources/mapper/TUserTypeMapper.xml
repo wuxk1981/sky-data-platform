@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sky.member.mapper.TUserTypeMapper">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.sky.member.entity.TUserTypeEntity" id="tUserTypeMap">
+        <result property="id" column="id"/>
+        <result property="cid" column="cid"/>
+        <result property="typename" column="typename"/>
+        <result property="updatetime" column="updatetime"/>
+        <result property="rmk" column="rmk"/>
+        <result property="status" column="status"/>
+        <result property="isdefault" column="isDefault"/>
+        <result property="pCg" column="p_cg"/>
+        <result property="pAg" column="p_ag"/>
+        <result property="pShenbogame" column="p_shenbogame"/>
+        <result property="pShenbo" column="p_shenbo"/>
+        <result property="pAb" column="p_ab"/>
+        <result property="pDs" column="p_ds"/>
+        <result property="pOg" column="p_og"/>
+        <result property="pBbin" column="p_bbin"/>
+        <result property="pBbingame" column="p_bbingame"/>
+        <result property="pMg" column="p_mg"/>
+        <result property="pPt" column="p_pt"/>
+        <result property="pHaba" column="p_haba"/>
+        <result property="pIg" column="p_ig"/>
+        <result property="pHg" column="p_hg"/>
+        <result property="pGgby" column="p_ggby"/>
+        <result property="pBgvideo" column="p_bgvideo"/>
+        <result property="pBglottery" column="p_bglottery"/>
+        <result property="bankcardId" column="bankCard_id"/>
+        <result property="alipayId" column="alipay_id"/>
+        <result property="wechatId" column="wechat_id"/>
+        <result property="tenpayId" column="tenPay_id"/>
+        <result property="onlinepayId" column="onlinepay_id"/>
+        <result property="integralRatio" column="integral_ratio"/>
+        <result property="cIntegralRatio" column="c_integral_ratio"/>
+        <result property="pHkig" column="p_hkig"/>
+        <result property="pVr" column="p_vr"/>
+        <result property="pJf" column="p_jf"/>
+        <result property="pJfcp" column="p_jfcp"/>
+        <result property="pYorplay" column="p_yorplay"/>
+        <result property="pKyqp" column="p_kyqp"/>
+        <result property="pSpta" column="p_spta"/>
+        <result property="pVgqp" column="p_vgqp"/>
+        <result property="paymentChannel" column="payment_channel"/>
+        <result property="jfAgsx" column="jf_agsx"/>
+        <result property="jfAgby" column="jf_agby"/>
+        <result property="jfBbsx" column="jf_bbsx"/>
+        <result property="jfBbdz" column="jf_bbdz"/>
+        <result property="jfCgsx" column="jf_cgsx"/>
+        <result property="jfDssx" column="jf_dssx"/>
+        <result property="jfGgby" column="jf_ggby"/>
+        <result property="jfHbdz" column="jf_hbdz"/>
+        <result property="jfHgty" column="jf_hgty"/>
+        <result property="jfIgctc" column="jf_igctc"/>
+        <result property="jfMgdz" column="jf_mgdz"/>
+        <result property="jfObsx" column="jf_obsx"/>
+        <result property="jfOgsx" column="jf_ogsx"/>
+        <result property="jfPtdz" column="jf_ptdz"/>
+        <result property="jfSbsx" column="jf_sbsx"/>
+        <result property="jfSbdz" column="jf_sbdz"/>
+        <result property="jfIgxgc" column="jf_igxgc"/>
+        <result property="jfIgpjctc" column="jf_igpjctc"/>
+        <result property="jfIgpjxgc" column="jf_igpjxgc"/>
+        <result property="jfVrcp" column="jf_vrcp"/>
+        <result property="jfYoplaydz" column="jf_yoplaydz"/>
+        <result property="jfKyqp" column="jf_kyqp"/>
+        <result property="jfSpta" column="jf_spta"/>
+        <result property="jfVgqp" column="jf_vgqp"/>
+        <result property="pGycp" column="p_gycp"/>
+        <result property="jfGycp" column="jf_gycp"/>
+        <result property="pPs" column="p_ps"/>
+        <result property="jfPs" column="jf_ps"/>
+        <result property="pNb" column="p_nb"/>
+        <result property="jfNb" column="jf_nb"/>
+        <result property="pLyqp" column="p_lyqp"/>
+        <result property="jfLyqp" column="jf_lyqp"/>
+        <result property="pJdb" column="p_jdb"/>
+        <result property="jfJdb" column="jf_jdb"/>
+    </resultMap>
+
+	<select id="queryObject" resultMap="tUserTypeMap">
+		select * from t_user_type where id = #{id}
+	</select>
+
+	<select id="queryList"  resultMap="tUserTypeMap">
+		select * from t_user_type
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from t_user_type 
+	</select>
+	 
+	<insert id="save" parameterType="com.sky.member.entity.TUserTypeEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into t_user_type
+		(
+			`cid`, 
+			`typename`, 
+			`updatetime`, 
+			`rmk`, 
+			`status`, 
+			`isDefault`, 
+			`p_cg`, 
+			`p_ag`, 
+			`p_shenbogame`, 
+			`p_shenbo`, 
+			`p_ab`, 
+			`p_ds`, 
+			`p_og`, 
+			`p_bbin`, 
+			`p_bbingame`, 
+			`p_mg`, 
+			`p_pt`, 
+			`p_haba`, 
+			`p_ig`, 
+			`p_hg`, 
+			`p_ggby`, 
+			`p_bgvideo`, 
+			`p_bglottery`, 
+			`bankCard_id`, 
+			`alipay_id`, 
+			`wechat_id`, 
+			`tenPay_id`, 
+			`onlinepay_id`, 
+			`integral_ratio`, 
+			`c_integral_ratio`, 
+			`p_hkig`, 
+			`p_vr`, 
+			`p_jf`, 
+			`p_jfcp`, 
+			`p_yorplay`, 
+			`p_kyqp`, 
+			`p_spta`, 
+			`p_vgqp`, 
+			`payment_channel`, 
+			`jf_agsx`, 
+			`jf_agby`, 
+			`jf_bbsx`, 
+			`jf_bbdz`, 
+			`jf_cgsx`, 
+			`jf_dssx`, 
+			`jf_ggby`, 
+			`jf_hbdz`, 
+			`jf_hgty`, 
+			`jf_igctc`, 
+			`jf_mgdz`, 
+			`jf_obsx`, 
+			`jf_ogsx`, 
+			`jf_ptdz`, 
+			`jf_sbsx`, 
+			`jf_sbdz`, 
+			`jf_igxgc`, 
+			`jf_igpjctc`, 
+			`jf_igpjxgc`, 
+			`jf_vrcp`, 
+			`jf_yoplaydz`, 
+			`jf_kyqp`, 
+			`jf_spta`, 
+			`jf_vgqp`, 
+			`p_gycp`, 
+			`jf_gycp`, 
+			`p_ps`, 
+			`jf_ps`, 
+			`p_nb`, 
+			`jf_nb`, 
+			`p_lyqp`, 
+			`jf_lyqp`, 
+			`p_jdb`, 
+			`jf_jdb`
+		)
+		values
+		(
+			#{cid}, 
+			#{typename}, 
+			#{updatetime}, 
+			#{rmk}, 
+			#{status}, 
+			#{isdefault}, 
+			#{pCg}, 
+			#{pAg}, 
+			#{pShenbogame}, 
+			#{pShenbo}, 
+			#{pAb}, 
+			#{pDs}, 
+			#{pOg}, 
+			#{pBbin}, 
+			#{pBbingame}, 
+			#{pMg}, 
+			#{pPt}, 
+			#{pHaba}, 
+			#{pIg}, 
+			#{pHg}, 
+			#{pGgby}, 
+			#{pBgvideo}, 
+			#{pBglottery}, 
+			#{bankcardId}, 
+			#{alipayId}, 
+			#{wechatId}, 
+			#{tenpayId}, 
+			#{onlinepayId}, 
+			#{integralRatio}, 
+			#{cIntegralRatio}, 
+			#{pHkig}, 
+			#{pVr}, 
+			#{pJf}, 
+			#{pJfcp}, 
+			#{pYorplay}, 
+			#{pKyqp}, 
+			#{pSpta}, 
+			#{pVgqp}, 
+			#{paymentChannel}, 
+			#{jfAgsx}, 
+			#{jfAgby}, 
+			#{jfBbsx}, 
+			#{jfBbdz}, 
+			#{jfCgsx}, 
+			#{jfDssx}, 
+			#{jfGgby}, 
+			#{jfHbdz}, 
+			#{jfHgty}, 
+			#{jfIgctc}, 
+			#{jfMgdz}, 
+			#{jfObsx}, 
+			#{jfOgsx}, 
+			#{jfPtdz}, 
+			#{jfSbsx}, 
+			#{jfSbdz}, 
+			#{jfIgxgc}, 
+			#{jfIgpjctc}, 
+			#{jfIgpjxgc}, 
+			#{jfVrcp}, 
+			#{jfYoplaydz}, 
+			#{jfKyqp}, 
+			#{jfSpta}, 
+			#{jfVgqp}, 
+			#{pGycp}, 
+			#{jfGycp}, 
+			#{pPs}, 
+			#{jfPs}, 
+			#{pNb}, 
+			#{jfNb}, 
+			#{pLyqp}, 
+			#{jfLyqp}, 
+			#{pJdb}, 
+			#{jfJdb}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.sky.member.entity.TUserTypeEntity">
+		update t_user_type 
+		<set>
+			<if test="cid != null">`cid` = #{cid}, </if>
+			<if test="typename != null">`typename` = #{typename}, </if>
+			<if test="updatetime != null">`updatetime` = #{updatetime}, </if>
+			<if test="rmk != null">`rmk` = #{rmk}, </if>
+			<if test="status != null">`status` = #{status}, </if>
+			<if test="isdefault != null">`isDefault` = #{isdefault}, </if>
+			<if test="pCg != null">`p_cg` = #{pCg}, </if>
+			<if test="pAg != null">`p_ag` = #{pAg}, </if>
+			<if test="pShenbogame != null">`p_shenbogame` = #{pShenbogame}, </if>
+			<if test="pShenbo != null">`p_shenbo` = #{pShenbo}, </if>
+			<if test="pAb != null">`p_ab` = #{pAb}, </if>
+			<if test="pDs != null">`p_ds` = #{pDs}, </if>
+			<if test="pOg != null">`p_og` = #{pOg}, </if>
+			<if test="pBbin != null">`p_bbin` = #{pBbin}, </if>
+			<if test="pBbingame != null">`p_bbingame` = #{pBbingame}, </if>
+			<if test="pMg != null">`p_mg` = #{pMg}, </if>
+			<if test="pPt != null">`p_pt` = #{pPt}, </if>
+			<if test="pHaba != null">`p_haba` = #{pHaba}, </if>
+			<if test="pIg != null">`p_ig` = #{pIg}, </if>
+			<if test="pHg != null">`p_hg` = #{pHg}, </if>
+			<if test="pGgby != null">`p_ggby` = #{pGgby}, </if>
+			<if test="pBgvideo != null">`p_bgvideo` = #{pBgvideo}, </if>
+			<if test="pBglottery != null">`p_bglottery` = #{pBglottery}, </if>
+			<if test="bankcardId != null">`bankCard_id` = #{bankcardId}, </if>
+			<if test="alipayId != null">`alipay_id` = #{alipayId}, </if>
+			<if test="wechatId != null">`wechat_id` = #{wechatId}, </if>
+			<if test="tenpayId != null">`tenPay_id` = #{tenpayId}, </if>
+			<if test="onlinepayId != null">`onlinepay_id` = #{onlinepayId}, </if>
+			<if test="integralRatio != null">`integral_ratio` = #{integralRatio}, </if>
+			<if test="cIntegralRatio != null">`c_integral_ratio` = #{cIntegralRatio}, </if>
+			<if test="pHkig != null">`p_hkig` = #{pHkig}, </if>
+			<if test="pVr != null">`p_vr` = #{pVr}, </if>
+			<if test="pJf != null">`p_jf` = #{pJf}, </if>
+			<if test="pJfcp != null">`p_jfcp` = #{pJfcp}, </if>
+			<if test="pYorplay != null">`p_yorplay` = #{pYorplay}, </if>
+			<if test="pKyqp != null">`p_kyqp` = #{pKyqp}, </if>
+			<if test="pSpta != null">`p_spta` = #{pSpta}, </if>
+			<if test="pVgqp != null">`p_vgqp` = #{pVgqp}, </if>
+			<if test="paymentChannel != null">`payment_channel` = #{paymentChannel}, </if>
+			<if test="jfAgsx != null">`jf_agsx` = #{jfAgsx}, </if>
+			<if test="jfAgby != null">`jf_agby` = #{jfAgby}, </if>
+			<if test="jfBbsx != null">`jf_bbsx` = #{jfBbsx}, </if>
+			<if test="jfBbdz != null">`jf_bbdz` = #{jfBbdz}, </if>
+			<if test="jfCgsx != null">`jf_cgsx` = #{jfCgsx}, </if>
+			<if test="jfDssx != null">`jf_dssx` = #{jfDssx}, </if>
+			<if test="jfGgby != null">`jf_ggby` = #{jfGgby}, </if>
+			<if test="jfHbdz != null">`jf_hbdz` = #{jfHbdz}, </if>
+			<if test="jfHgty != null">`jf_hgty` = #{jfHgty}, </if>
+			<if test="jfIgctc != null">`jf_igctc` = #{jfIgctc}, </if>
+			<if test="jfMgdz != null">`jf_mgdz` = #{jfMgdz}, </if>
+			<if test="jfObsx != null">`jf_obsx` = #{jfObsx}, </if>
+			<if test="jfOgsx != null">`jf_ogsx` = #{jfOgsx}, </if>
+			<if test="jfPtdz != null">`jf_ptdz` = #{jfPtdz}, </if>
+			<if test="jfSbsx != null">`jf_sbsx` = #{jfSbsx}, </if>
+			<if test="jfSbdz != null">`jf_sbdz` = #{jfSbdz}, </if>
+			<if test="jfIgxgc != null">`jf_igxgc` = #{jfIgxgc}, </if>
+			<if test="jfIgpjctc != null">`jf_igpjctc` = #{jfIgpjctc}, </if>
+			<if test="jfIgpjxgc != null">`jf_igpjxgc` = #{jfIgpjxgc}, </if>
+			<if test="jfVrcp != null">`jf_vrcp` = #{jfVrcp}, </if>
+			<if test="jfYoplaydz != null">`jf_yoplaydz` = #{jfYoplaydz}, </if>
+			<if test="jfKyqp != null">`jf_kyqp` = #{jfKyqp}, </if>
+			<if test="jfSpta != null">`jf_spta` = #{jfSpta}, </if>
+			<if test="jfVgqp != null">`jf_vgqp` = #{jfVgqp}, </if>
+			<if test="pGycp != null">`p_gycp` = #{pGycp}, </if>
+			<if test="jfGycp != null">`jf_gycp` = #{jfGycp}, </if>
+			<if test="pPs != null">`p_ps` = #{pPs}, </if>
+			<if test="jfPs != null">`jf_ps` = #{jfPs}, </if>
+			<if test="pNb != null">`p_nb` = #{pNb}, </if>
+			<if test="jfNb != null">`jf_nb` = #{jfNb}, </if>
+			<if test="pLyqp != null">`p_lyqp` = #{pLyqp}, </if>
+			<if test="jfLyqp != null">`jf_lyqp` = #{jfLyqp}, </if>
+			<if test="pJdb != null">`p_jdb` = #{pJdb}, </if>
+			<if test="jfJdb != null">`jf_jdb` = #{jfJdb}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from t_user_type where id = #{id}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from t_user_type where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>
